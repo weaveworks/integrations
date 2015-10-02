@@ -37,6 +37,10 @@
     "source": "to-upload/peers.sh",
     "destination": "/home/ec2-user/peers.sh"
   }, {
+    "type": "file",
+    "source": "to-upload/run.sh",
+    "destination": "/home/ec2-user/run.sh"
+  }, {
     "type": "shell",
     "inline": [
       "sudo yum -y install python-pip jq",
@@ -56,6 +60,8 @@
       "sudo mkdir /etc/weave",
       "sudo mv /home/ec2-user/peers.sh /etc/weave/peers.sh",
       "sudo chmod +x /etc/weave/peers.sh",
+      "sudo mv /home/ec2-user/run.sh /etc/weave/run.sh",
+      "sudo chmod +x /etc/weave/run.sh",
 
       "# Remove all ECS execution traces added while running packer",
       "sudo stop ecs",

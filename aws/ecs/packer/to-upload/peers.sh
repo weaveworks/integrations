@@ -11,7 +11,7 @@ current_autoscaling_group=$(aws autoscaling describe-auto-scaling-instances | \
                             jq -r ".AutoScalingInstances[] | select(.InstanceId == \"$current_instance_id\") | .AutoScalingGroupName")
 
 if [ -z "$current_autoscaling_group" ]; then
-  echo "instance doesn't belong to an autoscaling group" | logger -p local0.error  -t weave/peers.sh -s
+  >&2 echo "instance doesn't belong to an autoscaling group"
   exit 1
 fi
 
