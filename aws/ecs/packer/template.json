@@ -22,8 +22,8 @@
 
   "provisioners": [{
     "type": "file",
-    "source": "to-upload/ecs.conf",
-    "destination": "/home/ec2-user/ecs.conf"
+    "source": "to-upload/ecs.override",
+    "destination": "/home/ec2-user/ecs.override"
   }, {
     "type": "file",
     "source": "to-upload/weave.conf",
@@ -59,7 +59,7 @@
 
       "sudo mv /home/ec2-user/weave.conf /etc/init/weave.conf",
       "sudo mv /home/ec2-user/scope.conf /etc/init/scope.conf",
-      "sudo mv /home/ec2-user/ecs.conf /etc/init/ecs.conf",
+      "sudo mv /home/ec2-user/ecs.override /etc/init/ecs.override",
 
       "sudo mkdir /etc/weave",
       "sudo mv /home/ec2-user/peers.sh /etc/weave/peers.sh",
