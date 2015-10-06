@@ -13,6 +13,7 @@ succeed_or_die() {
 	echo "error: '$@' failed: $OUT" | logger -p local0.error -t $LOGGER_TAG
 	exit 1
     fi
+    echo $OUT
 }
 
 run_scope() {
@@ -28,7 +29,7 @@ run_scope() {
 	    ARGS="$ARGS --service-token=$SERVICE_TOKEN"
 	fi
 	PEERS=$(succeed_or_die /etc/weave/peers.sh)
-	args="$ARGS 127.0.0.1 $PEERS"
+	ARGS="$ARGS 127.0.0.1 $PEERS"
 	succeed_or_die scope launch $ARGS
     done
 }
