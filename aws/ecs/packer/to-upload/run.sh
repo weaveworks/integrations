@@ -35,6 +35,16 @@ run_scope() {
 }
 
 run_weave() {
+  # Ideally we would use a pre-stop Upstart stanza for terminating Weave, but we can't
+  # because it would cause ECS to stop in an unorderly manner:
+  #
+  # Stop Weave -> Weave pre-stop stanza -> Weave stopping event -> ECS pre-stop ...
+  #  
+  # The Weave pre-stop stanza would kick in before stopping ECS, which would result in
+  # the ECS Upstart job supervisor dying early (it talks to the weave proxy,
+  # which is gone), not allowing the ECS pre-stop stanza to kick in and stop the
+  # ecs-agent
+  trap 'succeed_or_die weave stop; exit 0' TERM
   while true; do
       # verify that weave is not running
       while is_container_running weaveproxy && is_container_running weave; do sleep 2; done
