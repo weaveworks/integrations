@@ -22,8 +22,8 @@
 
   "provisioners": [{
     "type": "file",
-    "source": "to-upload/ecs.conf",
-    "destination": "/home/ec2-user/ecs.conf"
+    "source": "to-upload/ecs.override",
+    "destination": "/home/ec2-user/ecs.override"
   }, {
     "type": "file",
     "source": "to-upload/weave.conf",
@@ -43,9 +43,7 @@
   }, {
     "type": "shell",
     "inline": [
-      "# Exclude ecs-init (and docker) from upgrades until https://github.com/aws/amazon-ecs-init/pull/27 is merged and released",
-      "sudo yum -y update # make sure all packages are up to date to minimize the impact of the exlusion",
-      "sudo bash -c 'echo exclude=ecs-init docker >> /etc/yum.conf'",
+      "sudo yum -y update # make sure we provide the latest packages",
 	  
       "sudo yum -y install python-pip jq",
       "sudo python-pip install awscli",
@@ -61,7 +59,7 @@
 
       "sudo mv /home/ec2-user/weave.conf /etc/init/weave.conf",
       "sudo mv /home/ec2-user/scope.conf /etc/init/scope.conf",
-      "sudo mv /home/ec2-user/ecs.conf /etc/init/ecs.conf",
+      "sudo mv /home/ec2-user/ecs.override /etc/init/ecs.override",
 
       "sudo mkdir /etc/weave",
       "sudo mv /home/ec2-user/peers.sh /etc/weave/peers.sh",
