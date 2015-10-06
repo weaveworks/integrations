@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and
 # limitations under the License.
 
-description "Amazon EC2 Container Service init"
-author "Amazon Web Services"
 start on started weave
 stop on stopping weave
 
@@ -25,7 +23,3 @@ pre-start script
   while [ "$(docker inspect -f '{{.State.Running}}' weaveproxy 2> /dev/null )" != true ]; do sleep 1; done
   exec /usr/libexec/amazon-ecs-init pre-start
 end script
-
-exec /usr/libexec/amazon-ecs-init start
-
-pre-stop exec /usr/libexec/amazon-ecs-init pre-stop
