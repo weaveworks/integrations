@@ -1,4 +1,4 @@
-## Weaveworks ECS Image (2015-10-06)
+## Weaveworks ECS Image (2015-10-07)
 
 New features:
 - Update base images to the latest version (2015.03.g).
