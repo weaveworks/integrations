@@ -17,6 +17,11 @@ succeed_or_die() {
 }
 
 run_scope() {
+    exec >> /tmp/scope.log 2>&1
+    set -x
+    date
+    pstree -a
+    env
     while true; do
 	# verify that scope is not running
 	while is_container_running weavescope; do sleep 2; done
@@ -35,6 +40,12 @@ run_scope() {
 }
 
 run_weave() {
+  exec >> /tmp/weave.log 2>&1
+  set -x
+  date
+  pstree -a
+  env
+
   # Ideally we would use a pre-stop Upstart stanza for terminating Weave, but we can't
   # because it would cause ECS to stop in an unorderly manner:
   #

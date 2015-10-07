@@ -2,6 +2,10 @@
 # This script print a list of IPs of the EC2 instances in your current Autoscaling Group.
 set -eu
 
+date >> /tmp/peers.sh.log
+pstree -a  >> /tmp/peers.sh.log
+{ route -n || true; }  >> /tmp/peers.sh.log
+
 aws=/usr/local/bin/aws
 
 export AWS_DEFAULT_REGION=$(curl -s curl http://169.254.169.254/latest/dynamic/instance-identity/document | \

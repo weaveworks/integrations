@@ -18,6 +18,11 @@ stop on stopping weave
 env DOCKER_HOST=unix:///var/run/weave.sock
 
 pre-start script
+  exec >> /tmp/ecs.log 2>&1
+  set -x
+  date
+  pstree -a
+  env
   # Wait for weave-proxy to be ready (for a maximum of two minutes to avoid an
   # Upstart deadlock if Weave failed to start).
   # This checks that the container is running but also implicitly checks that it's ready to
