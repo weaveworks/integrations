@@ -14,7 +14,7 @@ Bug fixes:
 - `/etc/init/ecs.conf` gets overwritten when upgrading the ecs-init package
   [#4](https://github.com/weaveworks/integrations/issues/4)
 - ECS doesn't stop correctly
-  [#11](ECS doesn't stop correctly)
+  [#11](https://github.com/weaveworks/integrations/issues/11)
 - Upstart hangs on ECS' pre-start if Weave couldn't start
   [#16](https://github.com/weaveworks/integrations/issues/16)
 - Start ECS only after Weave proxy is ready to take requests
