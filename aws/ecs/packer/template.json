@@ -52,9 +52,9 @@
       "sudo chmod +x /usr/local/bin/weave",
       "sudo /usr/local/bin/weave setup",
 
-      "sudo curl -L https://github.com/weaveworks/scope/releases/download/v0.8.0/scope -o /usr/local/bin/scope",
+      "sudo curl -L https://raw.githubusercontent.com/weaveworks/scope/master/scope -o /usr/local/bin/scope",
       "sudo chmod +x /usr/local/bin/scope",
-      "docker pull weaveworks/scope:0.8.0",
+      "docker pull weaveworks/scope:latest",
 
 
       "sudo mv /home/ec2-user/weave.conf /etc/init/weave.conf",
