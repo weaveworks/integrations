@@ -15,7 +15,7 @@
 start on started weave
 stop on stopping weave
 
-env DOCKER_HOST=unix:///var/run/weave.sock
+env DOCKER_HOST=unix:///var/run/weave/weave.sock
 
 pre-start script
   # Wait for weave-proxy to be ready (for a maximum of two minutes to avoid an
