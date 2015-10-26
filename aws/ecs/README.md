@@ -14,12 +14,12 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-8fb9e5ea |
-| us-west-1      | ami-8fef2ccb |
-| us-west-2      | ami-b2907281 |
-| eu-west-1      | ami-55f0cf22 |
-| ap-northeast-1 | ami-f65835f6 |
-| ap-southeast-2 | ami-a3cc8699 |
+| us-east-1      | ami-c9673fac |
+| us-west-1      | ami-a577b4e1 |
+| us-west-2      | ami-24db3617 |
+| eu-west-1      | ami-bb2b12cc |
+| ap-northeast-1 | ami-548fe054 |
+| ap-southeast-2 | ami-f75500cd |
 
 
 ## Build Your Own Weave ECS AMI

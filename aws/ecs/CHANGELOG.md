@@ -1,9 +1,15 @@
+## Weaveworks ECS Image (2015-10-26)
+
+Bug fixes:
+- Really bundle Weave 1.2
+  [#33](https://github.com/weaveworks/integrations/issues/33)
+
 ## Weaveworks ECS Image (2015-10-22)
 
 New features:
 - Update base images to the latest version (2015.09.a)
   [#30](https://github.com/weaveworks/integrations/pull/10)
-- Use Weave 1.1.2
+- Use Weave 1.2 (**EDIT**: not really, the 2015-10-26 release fixes this)
   [#31](https://github.com/weaveworks/integrations/pull/18)
 
 Bug fixes:
