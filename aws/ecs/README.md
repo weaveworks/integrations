@@ -147,6 +147,9 @@ You can do this at instance-initialization time using
 which is similar to how
 [ECS Cluster Mapping is configured](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html#instance-launch-user-data-step).
 
+<!--- Do not change the title, otherwise links to
+https://github.com/weaveworks/integrations/tree/master/aws/ecs#creating-your-own-customized-weave-ecs-ami
+will break (e.g. from the ECS guide) -->
 ## Creating Your Own Customized Weave ECS AMI
 
 Clone the integrations repository and then change to the `packer` directory.
