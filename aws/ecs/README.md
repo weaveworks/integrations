@@ -1,4 +1,7 @@
-# Weave's EC2 Container Service Amazon Machine Images (Amazon ECS AMIs)
+<!--- Do not change the title, otherwise links to
+https://github.com/weaveworks/integrations/tree/master/aws/ecs#weaves-ecs-amis
+will break -->
+# Weave's ECS AMIs
 
 To make [Weave Net](http://weave.works/net), [Weave Run](http://weave.works/run)
 and [Weave Scope](http://weave.works/scope) easier to use with
