@@ -44,6 +44,7 @@ run_weave() {
   # the ECS Upstart job supervisor dying early (it talks to the weave proxy,
   # which is gone), not allowing the ECS pre-stop stanza to kick in and stop the
   # ecs-agent
+  export WEAVE_NO_FASTDP=true
   trap 'succeed_or_die weave stop; exit 0' TERM
   while true; do
       # verify that weave is not running
