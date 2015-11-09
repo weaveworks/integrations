@@ -10,11 +10,11 @@ New features:
 - Update base images to the latest version (2015.09.a)
   [#30](https://github.com/weaveworks/integrations/pull/10)
 - Use Weave 1.2 (**EDIT**: not really, the 2015-10-26 release fixes this)
-  [#31](https://github.com/weaveworks/integrations/pull/18)
+  [#31](https://github.com/weaveworks/integrations/pull/31)
 
 Bug fixes:
 - Weave proxy unexpectedly closes the connection when spawning the ecs-agent.
-  (implicitly fixed by upgrading to Weave 1.1.2, see
+  (implicitly fixed by upgrading to Weave 1.2, see
   [weave/#1514](https://github.com/weaveworks/weave/issues/1514))
 
 
