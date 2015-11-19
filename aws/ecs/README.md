@@ -29,7 +29,7 @@ not remove it and respect the format! -->
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2015.03.g` and also includes:
+version `2015.09.a` and also includes:
 
 * [Weave Net and Weave Run 1.2.0](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-120)
 * [Weave Scope 0.8.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-080)
