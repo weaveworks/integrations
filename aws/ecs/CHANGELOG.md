@@ -1,3 +1,16 @@
+## Weaveworks ECS Image (2015-11-23)
+
+New features:
+- Upgrade base AMI to `2015.09.b`
+  [#39](https://github.com/weaveworks/integrations/pull/39)
+- Upgrade Weave Net/Run version 1.3.1 and Weave Scope to version 0.10.0
+  [#38](https://github.com/weaveworks/integrations/pull/38)
+
+Bug fixes:
+- Scope won't be able to inspect the Weave network if started after Weave
+  [#35](https://github.com/weaveworks/integrations/issues/35)
+
+
 ## Weaveworks ECS Image (2015-10-26)
 
 Bug fixes:
