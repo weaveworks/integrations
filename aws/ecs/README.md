@@ -18,21 +18,21 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-c9673fac |
-| us-west-1      | ami-a577b4e1 |
-| us-west-2      | ami-24db3617 |
-| eu-west-1      | ami-bb2b12cc |
-| ap-northeast-1 | ami-548fe054 |
-| ap-southeast-2 | ami-f75500cd |
+| us-east-1      | ami-3475335e |
+| us-west-1      | ami-2e6e074e |
+| us-west-2      | ami-e0455681 |
+| eu-west-1      | ami-c60ca9b5 |
+| ap-northeast-1 | ami-246b464a |
+| ap-southeast-2 | ami-cbb6efa8 |
 
 ## What's in the Weave ECS AMIs?
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2015.09.a` and also includes:
+version `2015.09.b` and also includes:
 
-* [Weave Net and Weave Run 1.2.0](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-120)
-* [Weave Scope 0.8.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-080)
+* [Weave Net and Weave Run 1.3.1](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-131)
+* [Weave Scope 0.10.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0100)
 
 
 ## Deployment Requirements
