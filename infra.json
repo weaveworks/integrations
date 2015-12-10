@@ -346,7 +346,32 @@
         "Path": "/",
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-        ]
+        ],
+        "Policies": [ {
+            "PolicyName": "ClusterInstanceRole",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [ {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecs:CreateCluster",
+                    "ecs:DeregisterContainerInstance",
+                    "ecs:DiscoverPollEndpoint",
+                    "ecs:Poll",
+                    "ecs:RegisterContainerInstance",
+                    "ecs:Submit*",
+                    "ecs:ListClusters",
+                    "ecs:ListContainerInstances",
+                    "ecs:DescribeContainerInstances",
+                    "ec2:DescribeInstances",
+                    "autoscaling:DescribeAutoScalingInstances"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+              } ]
+            }
+        } ]
       }
     },
     "EcsInstanceProfile": {
