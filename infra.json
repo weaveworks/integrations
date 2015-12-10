@@ -305,45 +305,73 @@
               "Ref": "VpcId"
             }
           ]
-        },
-        "SecurityGroupIngress" : [
-          {
-            "IpProtocol" : "tcp",
-            "FromPort" : "80",
-            "ToPort" : "80",
-            "CidrIp" : "0.0.0.0/0"
-          },
-          {
-            "IpProtocol" : "tcp",
-            "FromPort" : "22",
-            "ToPort" : "22",
-            "CidrIp" : "0.0.0.0/0"
-          },
-          {
-            "IpProtocol" : "tcp",
-            "FromPort" : "4040",
-            "ToPort" : "4040",
-            "CidrIp" : "0.0.0.0/0"
-          },
-          {
-            "IpProtocol" : "tcp",
-            "FromPort" : "4040",
-            "ToPort" : "4040",
-            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
-          },
-          {
-            "IpProtocol" : "tcp",
-            "FromPort" : "6783",
-            "ToPort" : "6783",
-            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
-          },
-          {
-            "IpProtocol" : "udp",
-            "FromPort" : "6783",
-            "ToPort" : "6784",
-            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
-          }
-        ]
+        }
+      }
+    },
+    "EcsSecurityGroupIngressAppPort": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "tcp",
+        "FromPort" : "80",
+        "ToPort" : "80",
+        "CidrIp" : "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressSshPort": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "tcp",
+        "FromPort" : "22",
+        "ToPort" : "22",
+        "CidrIp" : "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressWeaveScopeExtPort": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "tcp",
+        "FromPort" : "4040",
+        "ToPort" : "4040",
+        "CidrIp" : "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressWeaveScopeIntPort": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "tcp",
+        "FromPort" : "4040",
+        "ToPort" : "4040",
+        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
+      }
+    },
+    "EcsSecurityGroupIngressWeaveNetIntTcpPort": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "tcp",
+        "FromPort" : "6783",
+        "ToPort" : "6783",
+        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
+      }
+    },
+    "EcsSecurityGroupIngressWeaveNetIntUdpPorts": {
+      "Condition": "CreateSecurityGroup",
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId" : { "Ref" : "EcsSecurityGroup" },
+        "IpProtocol" : "udp",
+        "FromPort" : "6783",
+        "ToPort" : "6784",
+        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
       }
     },
     "EcsInstancePolicy": {
