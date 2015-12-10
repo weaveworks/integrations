@@ -3,9 +3,9 @@
   "Description": "AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
   "Mappings": {
     "VpcCidrs": {
-      "vpc": {"cidr" : "10.0.0.0/16"},
-      "pubsubnet1": {"cidr" : "10.0.0.0/24"},
-      "pubsubnet2": {"cidr" :"10.0.1.0/24"}
+      "vpc": {"cidr" : "172.31.0.0/16"},
+      "pubsubnet1": {"cidr" : "172.31.0.0/24"},
+      "pubsubnet2": {"cidr" :"172.31.1.0/24"}
     }
   },
   "Parameters": {
@@ -80,16 +80,6 @@
       "Type": "String",
       "Description": "Optional - Existing security group to associate the container instances. Creates one by default.",
       "Default": ""
-    },
-    "SourceCidr": {
-      "Type": "String",
-      "Description": "Optional - CIDR/IP range for EcsPort - defaults to 0.0.0.0/0",
-      "Default": "0.0.0.0/0"
-    },
-    "EcsPort" : {
-      "Type" : "String",
-      "Description" : "Optional - Security Group port to open on ECS instances - defaults to port 80",
-      "Default" : "80"
     },
     "VpcAvailabilityZones": {
       "Type": "CommaDelimitedList",
@@ -316,12 +306,44 @@
             }
           ]
         },
-        "SecurityGroupIngress" : [ {
+        "SecurityGroupIngress" : [
+          {
             "IpProtocol" : "tcp",
-            "FromPort" : { "Ref" : "EcsPort" },
-            "ToPort" : { "Ref" : "EcsPort" },
-            "CidrIp" : { "Ref" : "SourceCidr" } 
-        } ]
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "22",
+            "ToPort" : "22",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "4040",
+            "ToPort" : "4040",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "4040",
+            "ToPort" : "4040",
+            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "6783",
+            "ToPort" : "6783",
+            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
+          },
+          {
+            "IpProtocol" : "udp",
+            "FromPort" : "6783",
+            "ToPort" : "6784",
+            "SourceSecurityGroupId" : { "Ref": "EcsSecurityGroup" },
+          }
+        ]
       }
     },
     "EcsInstancePolicy": {
