@@ -85,11 +85,6 @@
       "Type": "CommaDelimitedList",
       "Description": "Optional - Comma-delimited list of VPC availability zones in which to create subnets.  Required if setting VpcId.",
       "Default": ""
-    },
-    "EcsCluster" : {
-      "Type" : "String",
-      "Description" : "ECS Cluster Name",
-      "Default" : "default"
     }
   },
   "Conditions": {
@@ -148,6 +143,9 @@
     }
   },
   "Resources": {
+    "EcsCluster": {
+      "Type": "AWS::ECS::Cluster"
+    },
     "Vpc": {
       "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::VPC",
