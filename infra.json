@@ -57,56 +57,18 @@
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
-    "KeyName": {
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "Description": "Optional - Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
-      "Default": ""
-    },
-    "VpcId": {
-      "Type": "String",
-      "Description": "Optional - VPC Id of existing VPC. Leave blank to have a new VPC created",
-      "Default": "",
-      "AllowedPattern": "^(?:vpc-[0-9a-f]{8}|)$",
-      "ConstraintDescription": "VPC Id must begin with 'vpc-' or leave blank to have a new VPC created"
-    },
-    "SubnetIds": {
-      "Type": "CommaDelimitedList",
-      "Description": "Optional - Comma separated list of two (2) existing VPC Subnet Ids where ECS instances will run.  Required if setting VpcId.",
-      "Default": ""
-    },
     "AsgMaxSize": {
       "Type": "Number",
       "Description": "Maximum size and initial Desired Capacity of ECS Auto Scaling Group",
       "Default": "1"
     },
-    "SecurityGroup": {
-      "Type": "String",
-      "Description": "Optional - Existing security group to associate the container instances. Creates one by default.",
-      "Default": ""
-    },
-    "VpcAvailabilityZones": {
-      "Type": "CommaDelimitedList",
-      "Description": "Optional - Comma-delimited list of VPC availability zones in which to create subnets.  Required if setting VpcId.",
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "Optional - Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
       "Default": ""
     }
   },
   "Conditions": {
-    "CreateVpcResources": {
-      "Fn::Equals": [
-        {
-          "Ref": "VpcId"
-        },
-        ""
-      ]
-    },
-    "CreateSecurityGroup": {
-      "Fn::Equals": [
-        {
-          "Ref": "SecurityGroup"
-        },
-        ""
-      ]
-    },
     "CreateEC2LCWithKeyPair": {
       "Fn::Not": [
         {
@@ -126,23 +88,6 @@
         },
         ""
       ]
-    },
-    "UseSpecifiedVpcAvailabilityZones": {
-      "Fn::Not": [
-        {
-          "Fn::Equals": [
-            {
-              "Fn::Join": [
-                "",
-                {
-                  "Ref": "VpcAvailabilityZones"
-                }
-              ]
-            },
-            ""
-          ]
-        }
-      ]
     }
   },
   "Resources": {
@@ -150,7 +95,6 @@
       "Type": "AWS::ECS::Cluster"
     },
     "Vpc": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::VPC",
       "Properties": {
         "CidrBlock": {
@@ -159,7 +103,6 @@
       }
     },
     "PubSubnetAz1": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "VpcId": {
@@ -169,32 +112,18 @@
           "Fn::FindInMap": ["VpcCidrs", "pubsubnet1", "cidr"]
         },
         "AvailabilityZone": {
-          "Fn::If": [
-            "UseSpecifiedVpcAvailabilityZones",
+          "Fn::Select": [
+            "0",
             {
-              "Fn::Select": [
-                "0",
-                {
-                  "Ref": "VpcAvailabilityZones"
-                }
-              ]
-            },
-            {
-              "Fn::Select": [
-                "0",
-                {
-                  "Fn::GetAZs": {
-                    "Ref": "AWS::Region"
-                  }
-                }
-              ]
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
             }
           ]
         }
       }
     },
     "PubSubnetAz2": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "VpcId": {
@@ -204,36 +133,21 @@
           "Fn::FindInMap": ["VpcCidrs", "pubsubnet2", "cidr"]
         },
         "AvailabilityZone": {
-          "Fn::If": [
-            "UseSpecifiedVpcAvailabilityZones",
+          "Fn::Select": [
+            "1",
             {
-              "Fn::Select": [
-                "1",
-                {
-                  "Ref": "VpcAvailabilityZones"
-                }
-              ]
-            },
-            {
-              "Fn::Select": [
-                "1",
-                {
-                  "Fn::GetAZs": {
-                    "Ref": "AWS::Region"
-                  }
-                }
-              ]
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
             }
           ]
         }
       }
     },
     "InternetGateway": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::InternetGateway"
     },
     "AttachGateway": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
         "VpcId": {
@@ -245,7 +159,6 @@
       }
     },
     "RouteViaIgw": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -254,7 +167,6 @@
       }
     },
     "PublicRouteViaIgw": {
-      "Condition": "CreateVpcResources",
       "DependsOn": "AttachGateway",
       "Type": "AWS::EC2::Route",
       "Properties": {
@@ -268,7 +180,6 @@
       }
     },
     "PubSubnet1RouteTableAssociation": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "SubnetId": {
@@ -280,7 +191,6 @@
       }
     },
     "PubSubnet2RouteTableAssociation": {
-      "Condition": "CreateVpcResources",
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "SubnetId": {
@@ -292,25 +202,13 @@
       }
     },
     "EcsSecurityGroup": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "ECS Allowed Ports",
-        "VpcId": {
-          "Fn::If": [
-            "CreateVpcResources",
-            {
-              "Ref": "Vpc"
-            },
-            {
-              "Ref": "VpcId"
-            }
-          ]
-        }
+        "VpcId": {"Ref" : "Vpc"}
       }
     },
     "EcsSecurityGroupIngressAppPort": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -321,7 +219,6 @@
       }
     },
     "EcsSecurityGroupIngressSshPort": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -332,7 +229,6 @@
       }
     },
     "EcsSecurityGroupIngressWeaveScopeExtPort": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -343,7 +239,6 @@
       }
     },
     "EcsSecurityGroupIngressWeaveScopeIntPort": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -354,7 +249,6 @@
       }
     },
     "EcsSecurityGroupIngressWeaveNetIntTcpPort": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -365,7 +259,6 @@
       }
     },
     "EcsSecurityGroupIngressWeaveNetIntUdpPorts": {
-      "Condition": "CreateSecurityGroup",
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId" : { "Ref" : "EcsSecurityGroup" },
@@ -453,17 +346,7 @@
         "KeyName": {
           "Ref": "KeyName"
         },
-        "SecurityGroups": {
-          "Fn::If": [
-            "CreateSecurityGroup",
-            [ {
-              "Ref": "EcsSecurityGroup"
-            } ],
-            [ {
-              "Ref": "SecurityGroup"
-            } ]
-          ]
-        },
+        "SecurityGroups": [ {"Ref": "EcsSecurityGroup"} ],
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
@@ -495,17 +378,7 @@
         "IamInstanceProfile": {
           "Ref": "EcsInstanceProfile"
         },
-        "SecurityGroups": {
-          "Fn::If": [
-            "CreateSecurityGroup",
-            [ {
-              "Ref": "EcsSecurityGroup"
-            } ],
-            [ {
-              "Ref": "SecurityGroup"
-            } ]
-          ]
-        },
+        "SecurityGroups": [ {"Ref" : "EcsSecurityGroup"} ],
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
@@ -526,29 +399,14 @@
     "EcsInstanceAsg": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
-        "VPCZoneIdentifier": {
-          "Fn::If": [
-            "CreateVpcResources",
-            [
-              {
-                "Fn::Join": [
-                  ",",
-                  [
-                    {
-                      "Ref": "PubSubnetAz1"
-                    },
-                    {
-                      "Ref": "PubSubnetAz2"
-                    }
-                  ]
-                ]
-              }
-            ],
-            {
-              "Ref": "SubnetIds"
-            }
-          ]
-        },
+        "VPCZoneIdentifier": [
+          {
+            "Fn::Join": [
+              ",",
+              [ {"Ref" : "PubSubnetAz1"}, {"Ref" : "PubSubnetAz2"} ]
+            ]
+          }
+        ],
         "LaunchConfigurationName": {
           "Fn::If": [
             "CreateEC2LCWithKeyPair",
