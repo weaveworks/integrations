@@ -3,17 +3,35 @@
   "Description": "AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
   "Mappings": {
     "VpcCidrs": {
-      "vpc": {"cidr" : "172.31.0.0/16"},
-      "pubsubnet1": {"cidr" : "172.31.0.0/24"},
-      "pubsubnet2": {"cidr" :"172.31.1.0/24"}
+      "vpc": {
+        "cidr": "172.31.0.0/16"
+      },
+      "pubsubnet1": {
+        "cidr": "172.31.0.0/24"
+      },
+      "pubsubnet2": {
+        "cidr": "172.31.1.0/24"
+      }
     },
     "WeaveworksEcsAmiIds": {
-      "us-east-1": {"ImageId" : "ami-3475335e"},
-      "us-west-1": {"ImageId" : "ami-2e6e074e"},
-      "us-west-2": {"ImageId" : "ami-e0455681"},
-      "eu-west-1": {"ImageId" : "ami-c60ca9b5"},
-      "ap-northeast-1": {"ImageId" : "ami-246b464a"},
-      "ap-southeast-2": {"ImageId" : "ami-cbb6efa8"}
+      "us-east-1": {
+        "ImageId": "ami-3475335e"
+      },
+      "us-west-1": {
+        "ImageId": "ami-2e6e074e"
+      },
+      "us-west-2": {
+        "ImageId": "ami-e0455681"
+      },
+      "eu-west-1": {
+        "ImageId": "ami-c60ca9b5"
+      },
+      "ap-northeast-1": {
+        "ImageId": "ami-246b464a"
+      },
+      "ap-southeast-2": {
+        "ImageId": "ami-cbb6efa8"
+      }
     }
   },
   "Parameters": {
@@ -98,7 +116,11 @@
       "Type": "AWS::EC2::VPC",
       "Properties": {
         "CidrBlock": {
-          "Fn::FindInMap": ["VpcCidrs", "vpc", "cidr"]
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "vpc",
+            "cidr"
+          ]
         }
       }
     },
@@ -109,7 +131,11 @@
           "Ref": "Vpc"
         },
         "CidrBlock": {
-          "Fn::FindInMap": ["VpcCidrs", "pubsubnet1", "cidr"]
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "pubsubnet1",
+            "cidr"
+          ]
         },
         "AvailabilityZone": {
           "Fn::Select": [
@@ -130,7 +156,11 @@
           "Ref": "Vpc"
         },
         "CidrBlock": {
-          "Fn::FindInMap": ["VpcCidrs", "pubsubnet2", "cidr"]
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "pubsubnet2",
+            "cidr"
+          ]
         },
         "AvailabilityZone": {
           "Fn::Select": [
@@ -205,67 +235,87 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "ECS Allowed Ports",
-        "VpcId": {"Ref" : "Vpc"}
+        "VpcId": {
+          "Ref": "Vpc"
+        }
       }
     },
     "EcsSecurityGroupIngressAppPort": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "tcp",
-        "FromPort" : "80",
-        "ToPort" : "80",
-        "CidrIp" : "0.0.0.0/0"
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
       }
     },
     "EcsSecurityGroupIngressSshPort": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "tcp",
-        "FromPort" : "22",
-        "ToPort" : "22",
-        "CidrIp" : "0.0.0.0/0"
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
       }
     },
     "EcsSecurityGroupIngressWeaveScopeExtPort": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "tcp",
-        "FromPort" : "4040",
-        "ToPort" : "4040",
-        "CidrIp" : "0.0.0.0/0"
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4040",
+        "ToPort": "4040",
+        "CidrIp": "0.0.0.0/0"
       }
     },
     "EcsSecurityGroupIngressWeaveScopeIntPort": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "tcp",
-        "FromPort" : "4040",
-        "ToPort" : "4040",
-        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4040",
+        "ToPort": "4040",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
       }
     },
     "EcsSecurityGroupIngressWeaveNetIntTcpPort": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "tcp",
-        "FromPort" : "6783",
-        "ToPort" : "6783",
-        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "6783",
+        "ToPort": "6783",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
       }
     },
     "EcsSecurityGroupIngressWeaveNetIntUdpPorts": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "GroupId" : { "Ref" : "EcsSecurityGroup" },
-        "IpProtocol" : "udp",
-        "FromPort" : "6783",
-        "ToPort" : "6784",
-        "SourceSecurityGroupId" : { "Ref" : "EcsSecurityGroup" }
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "6783",
+        "ToPort": "6784",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
       }
     },
     "EcsInstancePolicy": {
@@ -291,11 +341,13 @@
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
         ],
-        "Policies": [ {
+        "Policies": [
+          {
             "PolicyName": "ClusterInstanceRole",
             "PolicyDocument": {
               "Version": "2012-10-17",
-              "Statement": [ {
+              "Statement": [
+                {
                   "Effect": "Allow",
                   "Action": [
                     "ecs:CreateCluster",
@@ -313,9 +365,11 @@
                   "Resource": [
                     "*"
                   ]
-              } ]
+                }
+              ]
             }
-        } ]
+          }
+        ]
       }
     },
     "EcsInstanceProfile": {
@@ -334,7 +388,13 @@
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId": {
-          "Fn::FindInMap": ["WeaveworksEcsAmiIds", {"Ref" : "AWS::Region" }, "ImageId"]
+          "Fn::FindInMap": [
+            "WeaveworksEcsAmiIds",
+            {
+              "Ref": "AWS::Region"
+            },
+            "ImageId"
+          ]
         },
         "InstanceType": {
           "Ref": "EcsInstanceType"
@@ -346,7 +406,11 @@
         "KeyName": {
           "Ref": "KeyName"
         },
-        "SecurityGroups": [ {"Ref": "EcsSecurityGroup"} ],
+        "SecurityGroups": [
+          {
+            "Ref": "EcsSecurityGroup"
+          }
+        ],
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
@@ -369,7 +433,13 @@
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId": {
-          "Fn::FindInMap": ["WeaveworksEcsAmiIds", {"Ref" : "AWS::Region" }, "ImageId"]
+          "Fn::FindInMap": [
+            "WeaveworksEcsAmiIds",
+            {
+              "Ref": "AWS::Region"
+            },
+            "ImageId"
+          ]
         },
         "InstanceType": {
           "Ref": "EcsInstanceType"
@@ -378,7 +448,11 @@
         "IamInstanceProfile": {
           "Ref": "EcsInstanceProfile"
         },
-        "SecurityGroups": [ {"Ref" : "EcsSecurityGroup"} ],
+        "SecurityGroups": [
+          {
+            "Ref": "EcsSecurityGroup"
+          }
+        ],
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
@@ -403,7 +477,14 @@
           {
             "Fn::Join": [
               ",",
-              [ {"Ref" : "PubSubnetAz1"}, {"Ref" : "PubSubnetAz2"} ]
+              [
+                {
+                  "Ref": "PubSubnetAz1"
+                },
+                {
+                  "Ref": "PubSubnetAz2"
+                }
+              ]
             ]
           }
         ],
