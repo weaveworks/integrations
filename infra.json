@@ -84,6 +84,11 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Description": "Optional - Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
       "Default": ""
+    },
+    "WeaveScopeServiceToken": {
+      "Type": "String",
+      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
+      "Default": ""
     }
   },
   "Conditions": {
@@ -421,7 +426,12 @@
                 {
                   "Ref": "EcsCluster"
                 },
-                " >> /etc/ecs/ecs.config\n"
+                " >> /etc/ecs/ecs.config\n",
+                "echo SERVICE_TOKEN=",
+                {
+                  "Ref": "WeaveScopeServiceToken"
+                },
+                " >> /etc/weave/scope.config\n"
               ]
             ]
           }
