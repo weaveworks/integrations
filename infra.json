@@ -6,14 +6,17 @@
       "vpc": {"cidr" : "172.31.0.0/16"},
       "pubsubnet1": {"cidr" : "172.31.0.0/24"},
       "pubsubnet2": {"cidr" :"172.31.1.0/24"}
+    },
+    "WeaveworksEcsAmiIds": {
+      "us-east-1": {"ImageId" : "ami-3475335e"},
+      "us-west-1": {"ImageId" : "ami-2e6e074e"},
+      "us-west-2": {"ImageId" : "ami-e0455681"},
+      "eu-west-1": {"ImageId" : "ami-c60ca9b5"},
+      "ap-northeast-1": {"ImageId" : "ami-246b464a"},
+      "ap-southeast-2": {"ImageId" : "ami-cbb6efa8"}
     }
   },
   "Parameters": {
-    "EcsAmiId": {
-      "Type": "String",
-      "Description": "ECS EC2 AMI id",
-      "Default": ""
-    },
     "EcsInstanceType": {
       "Type": "String",
       "Description": "ECS EC2 instance type",
@@ -437,7 +440,9 @@
       "Condition": "CreateEC2LCWithKeyPair",
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-        "ImageId": { "Ref" : "EcsAmiId" },
+        "ImageId": {
+          "Fn::FindInMap": ["WeaveworksEcsAmiIds", {"Ref" : "AWS::Region" }, "ImageId"]
+        },
         "InstanceType": {
           "Ref": "EcsInstanceType"
         },
@@ -480,7 +485,9 @@
       "Condition": "CreateEC2LCWithoutKeyPair",
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-        "ImageId": { "Ref" : "EcsAmiId" },
+        "ImageId": {
+          "Fn::FindInMap": ["WeaveworksEcsAmiIds", {"Ref" : "AWS::Region" }, "ImageId"]
+        },
         "InstanceType": {
           "Ref": "EcsInstanceType"
         },
