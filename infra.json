@@ -122,46 +122,44 @@
       "Properties": {
         "ContainerDefinitions": [
           {
-            "essential": true,
-            "expanded": true,
-            "entryPoint": [
+            "Essential": true,
+            "EntryPoint": [
               "sh",
               "-c"
             ],
-            "name": "dataproducer",
-            "image": "2opremio/weaveecsdemo",
-            "command": [
+            "Name": "dataproducer",
+            "Image": "2opremio/weaveecsdemo",
+            "Command": [
               "while true; do echo 'Hi, this is the data producer in' `hostname -i | awk '{ print $1 }'` | nc -q 0 -l -p 4540; done"
             ],
-            "cpu": 10,
-            "memory": 300
+            "Cpu": 10,
+            "Memory": 300
           },
           {
-            "portMappings": [
+            "PortMappings": [
               {
-                "hostPort": 80,
-                "containerPort": 80,
-                "protocol": "tcp"
+                "HostPort": 80,
+                "ContainerPort": 80
               }
             ],
-            "essential": true,
-            "entryPoint": [
+            "Essential": true,
+            "EntryPoint": [
               "bash",
               "-c"
             ],
-            "name": "httpserver",
-            "environment": [
+            "Name": "httpserver",
+            "Environment": [
               {
-                "name": "DATA_PRODUCER_NAME",
-                "value": "dataproducer"
+                "Name": "DATA_PRODUCER_NAME",
+                "Value": "dataproducer"
               }
             ],
-            "image": "2opremio/weaveecsdemo",
-            "command": [
+            "Image": "2opremio/weaveecsdemo",
+            "Command": [
               "set -x; sleep 7; while true; do DATA_PRODUCER_MESSAGE=`nc ${DATA_PRODUCER_NAME} 4540`; echo \"<html> <head> <link rel=\\\"icon\\\" href=\\\"data:;base64,iVBORw0KGgo=\\\"> <title>Weaveworks Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center><h1>Chosen data producer message:</h1> <h2>${DATA_PRODUCER_MESSAGE}</h2> </div>\" | nc -q 0 -l -p 80; done"
             ],
-            "cpu": 10,
-            "memory": 300
+            "Cpu": 10,
+            "Memory": 300
           }
         ],
         "Volumes": []
