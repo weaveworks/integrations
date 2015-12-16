@@ -110,6 +110,18 @@
         "Yes"
       ]
     },
+    "UseScopeService": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "WeaveScopeServiceToken"
+            },
+            ""
+          ]
+        }
+      ]
+    },
     "CreateEC2LCWithKeyPair": {
       "Fn::Not": [
         {
@@ -509,11 +521,23 @@
                   "Ref": "EcsCluster"
                 },
                 " >> /etc/ecs/ecs.config\n",
-                "echo SERVICE_TOKEN=",
+                {
+                  "Fn::If": [
+                    "UseScopeService",
+                    "echo SERVICE_TOKEN=",
+                    ""
+                  ]
+                },
                 {
                   "Ref": "WeaveScopeServiceToken"
                 },
-                " >> /etc/weave/scope.config\n"
+                {
+                  "Fn::If": [
+                    "UseScopeService",
+                    " >> /etc/weave/scope.config\n",
+                    ""
+                  ]
+                }
               ]
             ]
           }
