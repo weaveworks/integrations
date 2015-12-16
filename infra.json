@@ -85,6 +85,16 @@
       "Description": "Optional - Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
       "Default": ""
     },
+    "DeployExampleApp": {
+      "Type": "String",
+      "Description": "Deploy example app",
+      "Default": "Yes",
+      "AllowedValues": [
+        "Yes",
+        "No"
+      ],
+      "ConstraintDescription": "must be Yes or No"
+    },
     "WeaveScopeServiceToken": {
       "Type": "String",
       "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
@@ -92,6 +102,14 @@
     }
   },
   "Conditions": {
+    "DoDeployExampleApp": {
+      "Fn::Equals": [
+        {
+          "Ref": "DeployExampleApp"
+        },
+        "Yes"
+      ]
+    },
     "CreateEC2LCWithKeyPair": {
       "Fn::Not": [
         {
@@ -118,6 +136,7 @@
       "Type": "AWS::ECS::Cluster"
     },
     "EcsTask": {
+      "Condition": "DoDeployExampleApp",
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
         "ContainerDefinitions": [
@@ -166,6 +185,7 @@
       }
     },
     "EcsService": {
+      "Condition": "DoDeployExampleApp",
       "Type": "AWS::ECS::Service",
       "Properties": {
         "Cluster": {
