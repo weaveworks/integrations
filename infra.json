@@ -579,7 +579,24 @@
                 {
                   "Ref": "EcsCluster"
                 },
-                " >> /etc/ecs/ecs.config\n"
+                " >> /etc/ecs/ecs.config\n",
+                {
+                  "Fn::If": [
+                    "UseScopeService",
+                    "echo SERVICE_TOKEN=",
+                    ""
+                  ]
+                },
+                {
+                  "Ref": "WeaveScopeServiceToken"
+                },
+                {
+                  "Fn::If": [
+                    "UseScopeService",
+                    " >> /etc/weave/scope.config\n",
+                    ""
+                  ]
+                }
               ]
             ]
           }
