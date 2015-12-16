@@ -75,9 +75,9 @@
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
-    "AsgMaxSize": {
+    "Scale": {
       "Type": "Number",
-      "Description": "Maximum size and initial Desired Capacity of ECS Auto Scaling Group",
+      "Description": "Size of ECS cluster",
       "Default": "1"
     },
     "KeyName": {
@@ -116,6 +116,70 @@
   "Resources": {
     "EcsCluster": {
       "Type": "AWS::ECS::Cluster"
+    },
+    "EcsTask": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "essential": true,
+            "expanded": true,
+            "entryPoint": [
+              "sh",
+              "-c"
+            ],
+            "name": "dataproducer",
+            "image": "2opremio/weaveecsdemo",
+            "command": [
+              "while true; do echo 'Hi, this is the data producer in' `hostname -i | awk '{ print $1 }'` | nc -q 0 -l -p 4540; done"
+            ],
+            "cpu": 10,
+            "memory": 300
+          },
+          {
+            "portMappings": [
+              {
+                "hostPort": 80,
+                "containerPort": 80,
+                "protocol": "tcp"
+              }
+            ],
+            "essential": true,
+            "entryPoint": [
+              "bash",
+              "-c"
+            ],
+            "name": "httpserver",
+            "environment": [
+              {
+                "name": "DATA_PRODUCER_NAME",
+                "value": "dataproducer"
+              }
+            ],
+            "image": "2opremio/weaveecsdemo",
+            "command": [
+              "set -x; sleep 7; while true; do DATA_PRODUCER_MESSAGE=`nc ${DATA_PRODUCER_NAME} 4540`; echo \"<html> <head> <link rel=\\\"icon\\\" href=\\\"data:;base64,iVBORw0KGgo=\\\"> <title>Weaveworks Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center><h1>Chosen data producer message:</h1> <h2>${DATA_PRODUCER_MESSAGE}</h2> </div>\" | nc -q 0 -l -p 80; done"
+            ],
+            "cpu": 10,
+            "memory": 300
+          }
+        ],
+        "Volumes": []
+      }
+    },
+    "EcsService": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "EcsCluster"
+        },
+        "DesiredCount": {
+          "Ref": "Scale"
+        },
+        "TaskDefinition": {
+          "Ref": "EcsTask"
+        }
+      }
     },
     "Vpc": {
       "Type": "AWS::EC2::VPC",
@@ -511,10 +575,10 @@
         },
         "MinSize": "1",
         "MaxSize": {
-          "Ref": "AsgMaxSize"
+          "Ref": "Scale"
         },
         "DesiredCapacity": {
-          "Ref": "AsgMaxSize"
+          "Ref": "Scale"
         },
         "Tags": [
           {
