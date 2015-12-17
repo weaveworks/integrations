@@ -1,3 +1,14 @@
+## Weaveworks ECS Image (2015-12-17)
+
+New features:
+- Upgrade base AMI to `2015.09.c` and include two new regions (eu-central-1 and ap-southeast-1)
+  [#47](https://github.com/weaveworks/integrations/pull/47)
+- Upgrade Weave Net/Run to version 1.4.0
+  [#46](https://github.com/weaveworks/integrations/pull/46)
+- Upgrade Weave Scope to version 0.11.1
+  [#49](https://github.com/weaveworks/integrations/pull/49)
+
+
 ## Weaveworks ECS Image (2015-11-23)
 
 New features:
