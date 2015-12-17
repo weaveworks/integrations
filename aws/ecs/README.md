@@ -18,14 +18,14 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-1ffbae75 |
-| us-west-1      | ami-d3b1dab3 |
-| us-west-2      | ami-60fde201 |
-| eu-west-1      | ami-98bc1eeb |
-| eu-central-1   | ami-62e8f40e |
-| ap-northeast-1 | ami-6c9bb102 |
-| ap-southeast-1 | ami-7b458618 |
-| ap-southeast-2 | ami-34633857 |
+| us-east-1      | ami-13edb879 |
+| us-west-1      | ami-ed8ee58d |
+| us-west-2      | ami-56f7e837 |
+| eu-west-1      | ami-d28426a1 |
+| eu-central-1   | ami-d28426a1 |
+| ap-northeast-1 | ami-ae7441c0 |
+| ap-southeast-1 | ami-1e4e8d7d |
+| ap-southeast-2 | ami-1e603b7d |
 
 ## What's in the Weave ECS AMIs?
 
