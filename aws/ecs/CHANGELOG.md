@@ -1,3 +1,10 @@
+## Weaveworks ECS Image (2015-12-17.b)
+
+Bug fixes:
+- Really make sure Weave Scope starts after Weave Net
+  [#51](https://github.com/weaveworks/integrations/issues/51)
+
+
 ## Weaveworks ECS Image (2015-12-17)
 
 New features:
