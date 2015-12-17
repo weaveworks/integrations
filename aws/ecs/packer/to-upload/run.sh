@@ -9,7 +9,7 @@ is_container_running() {
 }
 
 succeed_or_die() {
-    if ! OUT=$($@ 2>&1); then
+    if ! OUT=$("$@" 2>&1); then
 	echo "error: '$@' failed: $OUT" | logger -p local0.error -t $LOGGER_TAG
 	exit 1
     fi
@@ -20,6 +20,15 @@ run_scope() {
     while true; do
 	# verify that scope is not running
 	while is_container_running weavescope; do sleep 2; done
+
+	# Scope startup depends on Weave Net until https://github.com/weaveworks/scope/issues/510 is fixed
+	# Wait for weave-proxy to be ready (for a maximum of two minutes to avoid an
+	# Upstart deadlock if Weave failed to start).
+	# This checks that the container is running but also implicitly checks that it's ready to
+	# receive requests since DOCKER_HOST=unix:///var/run/weave/weave.sock
+	CMD='while [ "$(docker inspect -f '"'"'{{.State.Running}}'"'"' weaveproxy 2> /dev/null )" != true ]; do sleep 1; done'
+	DOCKER_HOST=unix:///var/run/weave/weave.sock succeed_or_die timeout 120 bash -c "$CMD"
+
 	# launch scope
 	ARGS=""
 	if [ -e /etc/weave/scope.config ]; then
