@@ -82,8 +82,9 @@
     },
     "KeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName",
-      "Description": "Optional - Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
-      "Default": ""
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
+      "MinLength": "1",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
     },
     "DeployExampleApp": {
       "Type": "String",
@@ -120,26 +121,6 @@
             ""
           ]
         }
-      ]
-    },
-    "CreateEC2LCWithKeyPair": {
-      "Fn::Not": [
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "KeyName"
-            },
-            ""
-          ]
-        }
-      ]
-    },
-    "CreateEC2LCWithoutKeyPair": {
-      "Fn::Equals": [
-        {
-          "Ref": "KeyName"
-        },
-        ""
       ]
     }
   },
@@ -483,7 +464,6 @@
       }
     },
     "EcsInstanceLc": {
-      "Condition": "CreateEC2LCWithKeyPair",
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId": {
@@ -544,65 +524,6 @@
         }
       }
     },
-    "EcsInstanceLcWithoutKeyPair": {
-      "Condition": "CreateEC2LCWithoutKeyPair",
-      "Type": "AWS::AutoScaling::LaunchConfiguration",
-      "Properties": {
-        "ImageId": {
-          "Fn::FindInMap": [
-            "WeaveworksEcsAmiIds",
-            {
-              "Ref": "AWS::Region"
-            },
-            "ImageId"
-          ]
-        },
-        "InstanceType": {
-          "Ref": "EcsInstanceType"
-        },
-        "AssociatePublicIpAddress": true,
-        "IamInstanceProfile": {
-          "Ref": "EcsInstanceProfile"
-        },
-        "SecurityGroups": [
-          {
-            "Ref": "EcsSecurityGroup"
-          }
-        ],
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash\n",
-                "echo ECS_CLUSTER=",
-                {
-                  "Ref": "EcsCluster"
-                },
-                " >> /etc/ecs/ecs.config\n",
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    "echo SERVICE_TOKEN=",
-                    ""
-                  ]
-                },
-                {
-                  "Ref": "WeaveScopeServiceToken"
-                },
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    " >> /etc/weave/scope.config\n",
-                    ""
-                  ]
-                }
-              ]
-            ]
-          }
-        }
-      }
-    },
     "EcsInstanceAsg": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
@@ -622,15 +543,7 @@
           }
         ],
         "LaunchConfigurationName": {
-          "Fn::If": [
-            "CreateEC2LCWithKeyPair",
-            {
-              "Ref": "EcsInstanceLc"
-            },
-            {
-              "Ref": "EcsInstanceLcWithoutKeyPair"
-            }
-          ]
+          "Ref": "EcsInstanceLc"
         },
         "MinSize": "1",
         "MaxSize": {
