@@ -22,7 +22,7 @@ not remove it and respect the format! -->
 | us-west-1      | ami-ed8ee58d |
 | us-west-2      | ami-56f7e837 |
 | eu-west-1      | ami-d28426a1 |
-| eu-central-1   | ami-d28426a1 |
+| eu-central-1   | ami-e4eaf688 |
 | ap-northeast-1 | ami-ae7441c0 |
 | ap-southeast-1 | ami-1e4e8d7d |
 | ap-southeast-2 | ami-1e603b7d |
