@@ -34,7 +34,7 @@
       },
       "ap-southeast-1": {
         "ImageId": "ami-1e4e8d7d"
-      }
+      },
       "ap-southeast-2": {
         "ImageId": "ami-1e603b7d"
       }
