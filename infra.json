@@ -150,7 +150,7 @@
             "PortMappings": [
               {
                 "HostPort": 80,
-                "ContainerPort": 80
+                "ContainerPort": 5000
               }
             ],
             "Essential": true,
