@@ -135,15 +135,8 @@
         "ContainerDefinitions": [
           {
             "Essential": true,
-            "EntryPoint": [
-              "sh",
-              "-c"
-            ],
-            "Name": "dataproducer",
-            "Image": "2opremio/weaveecsdemo",
-            "Command": [
-              "while true; do echo 'Hi, this is the data producer in' `hostname -i | awk '{ print $1 }'` | nc -q 0 -l -p 4540; done"
-            ],
+            "Name": "redis",
+            "Image": "redis",
             "Cpu": 10,
             "Memory": 300
           },
@@ -155,20 +148,10 @@
               }
             ],
             "Essential": true,
-            "EntryPoint": [
-              "bash",
-              "-c"
-            ],
-            "Name": "httpserver",
-            "Environment": [
-              {
-                "Name": "DATA_PRODUCER_NAME",
-                "Value": "dataproducer"
-              }
-            ],
-            "Image": "2opremio/weaveecsdemo",
+            "Name": "hit-counter",
+            "Image": "coopermaa/hit-counter-demo",
             "Command": [
-              "set -x; sleep 7; while true; do DATA_PRODUCER_MESSAGE=`nc ${DATA_PRODUCER_NAME} 4540`; echo \"<html> <head> <link rel=\\\"icon\\\" href=\\\"data:;base64,iVBORw0KGgo=\\\"> <title>Weaveworks Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center><h1>Chosen data producer message:</h1> <h2>${DATA_PRODUCER_MESSAGE}</h2> </div>\" | nc -q 0 -l -p 80; done"
+              "python app.py"
             ],
             "Cpu": 10,
             "Memory": 300
