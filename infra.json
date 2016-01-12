@@ -134,7 +134,7 @@
     "EcsCluster": {
       "Type": "AWS::ECS::Cluster"
     },
-    "EcsTask": {
+    "EcsBackendDataTask": {
       "Condition": "DoDeployExampleApp",
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
@@ -145,7 +145,29 @@
             "Image": "redis",
             "Cpu": 10,
             "Memory": 300
-          },
+          }
+        ],
+        "Volumes": []
+      }
+    },
+    "EcsBackendDataService": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "EcsCluster"
+        },
+        "DesiredCount": 1,
+        "TaskDefinition": {
+          "Ref": "EcsBackendDataTask"
+        }
+      }
+    },
+    "EcsFrontendAppTask": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
           {
             "PortMappings": [
               {
@@ -157,7 +179,8 @@
             "Name": "hit-counter",
             "Image": "coopermaa/hit-counter-demo",
             "Command": [
-              "python app.py"
+              "python",
+              "app.py"
             ],
             "Cpu": 10,
             "Memory": 300
@@ -166,7 +189,7 @@
         "Volumes": []
       }
     },
-    "EcsService": {
+    "EcsFrontendAppService": {
       "Condition": "DoDeployExampleApp",
       "Type": "AWS::ECS::Service",
       "Properties": {
@@ -177,7 +200,7 @@
           "Ref": "Scale"
         },
         "TaskDefinition": {
-          "Ref": "EcsTask"
+          "Ref": "EcsFrontendAppTask"
         }
       }
     },
