@@ -1,3 +1,9 @@
+## Weaveworks ECS Image (2016-01-15)
+
+New features:
+- Upgrade base AMI to `2015.09.d`
+- Upgrade Weave Net to version 1.4.2 [#57](https://github.com/weaveworks/integrations/pull/57)
+
 ## Weaveworks ECS Image (2015-12-17.b)
 
 Bug fixes:
