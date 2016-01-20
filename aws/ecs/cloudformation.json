@@ -104,7 +104,7 @@
     },
     "WeaveScopeServiceToken": {
       "Type": "String",
-      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
+      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]. Leave empty to run Scope in Standalone Mode",
       "Default": ""
     }
   },
