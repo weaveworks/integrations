@@ -177,7 +177,7 @@
             ],
             "Essential": true,
             "Name": "hit-counter",
-            "Image": "coopermaa/hit-counter-demo",
+            "Image": "errordeveloper/hit-counter",
             "Command": [
               "python",
               "app.py"
