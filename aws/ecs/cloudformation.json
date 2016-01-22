@@ -501,56 +501,56 @@
           {
             "Ref": "EcsSecurityGroup"
           }
-        ],
-        "Metadata": {
-          "AWS::CloudFormation::Init": {
-            "config": {
-              "packages": {
-                "yum": {
-                  "jq": []
-                },
-                "python": {
-                  "awscli": []
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "packages": {
+              "yum": {
+                "jq": []
+              },
+              "python": {
+                "awscli": []
+              }
+            },
+            "files": {
+              "/etc/ecs/ecs.config": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ECS_CLUSTER=",
+                      {
+                        "Ref": "EcsCluster"
+                      }
+                    ]
+                  ]
                 }
               },
-              "files": {
-                "/etc/ecs/ecs.config": {
-                  "content": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        "ECS_CLUSTER=",
-                        {
-                          "Ref": "EcsCluster"
-                        }
-                      ]
+              "/etc/weave/scope.config": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          "SERVICE_TOKEN=",
+                          "## SERVICE_TOKEN="
+                        ]
+                      },
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          {
+                            "Ref": "WeaveScopeServiceToken"
+                          },
+                          "<unset>"
+                        ]
+                      }
                     ]
-                  }
-                },
-                "/etc/weave/scope.config": {
-                  "content": {
-                    "Fn::Join": [
-                      "",
-                      [
-                        {
-                          "Fn::If": [
-                            "UseScopeService",
-                            "SERVICE_TOKEN=",
-                            "## SERVICE_TOKEN="
-                          ]
-                        },
-                        {
-                          "Fn::If": [
-                            "UseScopeService",
-                            {
-                              "Ref": "WeaveScopeServiceToken"
-                            },
-                            "<unset>"
-                          ]
-                        }
-                      ]
-                    ]
-                  }
+                  ]
                 }
               }
             }
