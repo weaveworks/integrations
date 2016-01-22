@@ -502,36 +502,58 @@
             "Ref": "EcsSecurityGroup"
           }
         ],
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash\n",
-                "echo ECS_CLUSTER=",
-                {
-                  "Ref": "EcsCluster"
+        "Metadata": {
+          "AWS::CloudFormation::Init": {
+            "config": {
+              "packages": {
+                "yum": {
+                  "jq": []
                 },
-                " >> /etc/ecs/ecs.config\n",
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    "echo SERVICE_TOKEN=",
-                    ""
-                  ]
-                },
-                {
-                  "Ref": "WeaveScopeServiceToken"
-                },
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    " >> /etc/weave/scope.config\n",
-                    ""
-                  ]
+                "python": {
+                  "awscli": []
                 }
-              ]
-            ]
+              },
+              "files": {
+                "/etc/ecs/ecs.config": {
+                  "content": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "ECS_CLUSTER=",
+                        {
+                          "Ref": "EcsCluster"
+                        }
+                      ]
+                    ]
+                  }
+                },
+                "/etc/weave/scope.config": {
+                  "content": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        {
+                          "Fn::If": [
+                            "UseScopeService",
+                            "SERVICE_TOKEN=",
+                            "## SERVICE_TOKEN="
+                          ]
+                        },
+                        {
+                          "Fn::If": [
+                            "UseScopeService",
+                            {
+                              "Ref": "WeaveScopeServiceToken"
+                            },
+                            "<unset>"
+                          ]
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
