@@ -106,6 +106,16 @@
       "Type": "String",
       "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
       "Default": ""
+    },
+    "WeaveNetVersion": {
+      "Type": "String",
+      "Description": "Version of Weave Net to install",
+      "Default": "v1.4.2"
+    },
+    "WeaveScopeVersion": {
+      "Type": "String",
+      "Description": "Version of Weave Scope to install",
+      "Default": "v0.11.1"
     }
   },
   "Conditions": {
@@ -582,6 +592,53 @@
                     ]
                   ]
                 }
+              },
+              "/etc/init/ecs.override": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/ecs.override"
+              },
+              "/etc/init/weave.conf": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/weave.conf"
+              },
+              "/etc/init/scope.conf": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/scope.conf"
+              },
+              "/etc/weave/run.sh": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/run.sh",
+                "mode": "000755"
+              },
+              "/etc/weave/peers.sh": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/peers.sh",
+                "mode": "000755"
+              },
+              "/usr/local/bin/weave": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "https://github.com/weaveworks/weave/releases/download",
+                      {
+                        "Ref": "WeaveNetVersion"
+                      },
+                      "weave"
+                    ]
+                  ]
+                },
+                "mode": "000755"
+              },
+              "/usr/local/bin/scope": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "https://github.com/weaveworks/scope/releases/download",
+                      {
+                        "Ref": "WeaveScopeVersion"
+                      },
+                      "scope"
+                    ]
+                  ]
+                },
+                "mode": "000755"
               }
             }
           }
