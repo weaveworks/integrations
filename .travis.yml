@@ -23,6 +23,8 @@ deploy:
   skip_cleanup: true
   local_dir: cfn-to-publish
   upload_dir: integrations
+  on:
+    branch: ci
   access_key_id:
     secure: ONS+E6rthhKPXKZDtt7qdYKfayHLSG1JuGvFD2wirYhBcS/xdQskaE7qB8xUabhI90+ENJbUmd2uG+fNckS2mPMACp6TQ+1R89cNgyU1Z1WXUlGGT6PFtvTAhDehelzOHp27RYBl7JsuUtmayulSbE4zgjfAF4rNok7nMxKALbYTvMT/9yN2q/BUhOwptOu1aTOlncMb6f4Ac8PpEHlz17q+vfp2lpVWXR6U5k5tV5Qma0SUUZAr2ba+Vc1MSiQKDYUHhmA3u45Uen3A+Brp3BNRgGg6Hx+Zu/UgGz2RX/awew5dG8EunbpexLMSWdv9t6Wr4ofJpvtEFDK3bB92k6t6l6Nt2EqsxYCu0tlxM5n32dYMxkaMqwP0tPLHsggZmXK5aNeFT+YZTxiy6CnrTsftyfByzGGaDQ3eTiqtB3aHcXyUNIEkVvBYdrtOtw9WEWOzUydVeT2gJGY1lFZ6difAJ7nBigjQ5oU+OyuNMZzM49/UdK9+CoTyPXG4pSLehnX7GP8NuOzGI/j2t5jSqmgSecCWh4vR4sIs6GxUjgP+mKK3sOB1NN/O6JixTvPjlpxqMaFWZnhFlWDHdoBlwqamNnf8dNLbdaP3dIpUznIIDBsq2XjQeKxmN2FylMSRtQX2f3J7Q13xljsMIjOr+zydm/chy+OfgXWl2ZTRZes=
   secret_access_key:
