@@ -1,0 +1,11 @@
+language: go
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - awscli
+      - jq
+
+script:
+  - aws cloudformation validate-template --template-body file:////`pwd`/aws/ecs/cloudformation.json | jq .
