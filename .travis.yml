@@ -1,0 +1,32 @@
+sudo: false
+
+env:
+  global:
+    - PATH="${PATH}:${HOME}/.local/bin" AWS_DEFAULT_REGION="eu-central-1"
+    - secure: aEub6462B0FB31SUF/1GeM/qsi0eJ6xN6mRRb43Q7iUvzA2Mn/km7V9endU9m5LrxzC32FCNOXfwSasvHMCCOTrDChLBRoT/gR07iWbPCl/a8Ku9yyl13RVZfax1Wtulo3Ugb5T6bTN/WMOLCXwuLJGjE1PYRT134e/K42mQ7Tm1gTiMk1j4O7F9Bfa6znKsT+2ebz1Qy2qWXGubwsgpLLy7ZPgpANJ95L/HCZcs02wYWoqyUrH6X8D9vJ0PWx3szPEWCQd/nigILoPt9DinYCLg3qojQgX69dRezGK1TAd81Q4o7WzE7M6ySoIlpapfExUSKXLE1K+lRj69tkpvgNjo46tQGsbwLVoQXKgzjgHxT8zvnBSL76FQQMIsHoVmFsJH5QVGB8pktZSwsXcRqG8ROV0pI204/IX0zNB02STXB0rVMdjSuL6eVrIQ7dBPzOW25yIA564Q3URSAra8/RwDJidouJWWawZnQ61abXjKroWiOAarmAYWAr5730wwDRnPKzKMndy5tLF7xfsh+VPulhXdprZtjG1ga0VoGqTrncjcBEOZU7KRzGb0+brNllhMlVIi6xDbhoGKhXCcguwmAcucB1M5+9iT/V8AXEmAfKWOHH/MrruVctS0rry3yoLzJUYjC3lgVgJLNXbHKuns+k8zOHXs/5Em7rJVEq4=
+    - secure: LsVGcTek2r9Geo5SbdyczufhdyGI10c9BABuu4KtBoP8qeSFiWUhDkDuLpVCrXCsb8YYDwFP1nUqW0s6vvBwujMLObjyFppVYwxqP/71yFXraIApYBnMcherhs7tVHYgSmgD3ANmGWA+dk847sio/otqu5ug+Q8KnAwYIl9Qca2mB5MMlI7mlh3F0s50tAdNaASKsNQ1/y+iytXzU1fnpYxOWTdiSduH5GJeRSD18ROUBGUPAZjTzAgBGPe2SniEX3TI+6C+5hYzXPpwNSJt5R2lB0aBTvt0j0SCaQ4pqp7caEe8TwI7OzWidJowYKK/C7oTD7aDoxgu6528+zuKgVRV8ABIWy/l4CDAPruw6WDStL5q53yfKle12Zq+48PK0hl3rmnL1yzgajtaLuEN1Z1B7MJRFcL1qC6Abw9DRrmbgPkpChFepMGIPWcEzETN075ddycLZCI58doP8Mf3Y26+UncmZPIAkFXBhZJK9jfnYutSPwN4kLoCGsYTDPfBuF9Xee2zuTQUqOhM+G2HYtmZfbnyY/3OwRobvDZvCnWngzR3m5O2Xap5io569gmvn5d5MHu9Qs/YjC5xuQCHfFK2SwZt5m04z+UaV77WNdIWsVY6PYGnGEoMSgIz1NlANU4XVpNNmQTaeikUFLuiAlilq8tEMCr38QlcPaFmlOU=
+
+install:
+  - pip install --user awscli
+
+script:
+  - set -o pipefail
+  - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation.json" | jq .
+
+after_success:
+  - mkdir cfn-to-publish
+  - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation.json" > cfn-to-publish/ecs-baseline.json
+
+deploy:
+  provider: s3
+  bucket: weaveworks-cfn-public
+  skip_cleanup: true
+  local_dir: cfn-to-publish
+  upload_dir: integrations
+  acl: public_read
+  on:
+    branch: master
+  access_key_id:
+    secure: iVRdq/jeQ6hHNDjn4tiyvKnMZpntoGECAKKKh7Tnhbti6jdPvgAamiFocorFIScEz7SLGPN1xDHg04LQNpjJaJ2fsw5lb/J8QYZ/RxVmi7gKP7MatLJ1yFfCnQZF8/oEkPkQK3s18siL3Qkv9wuwuqnJIGNbVYWHuBdFPri1HPVKdr6XDyQiDq5CESMruuAGp2DxCfkWNk8svtiQooKNrDS7WI4AYqjIO7vr/vHSssaIe6WkE7ibajkIeL3mAPYmLhgFcsXtvPv9oy/egyHdLuzsglgqZ1aA/6+UwgM9zZY7adnWYFy2CXZedQCQOUqZegaKEkgYPEDykRaioUWUCMKv/7HovyZ9SffMzvGo3xNIgktk0ItZS0PU2ZfWGVfsGrrwrU+JT0192p3176I6dnXW+fbkW8NO+2n9Xx5m5kz69MFU7JRgbFSmjY0/J+ZRc5YD03sEwo4kekhs2NwV4KRES0X6rd9XPWjSyQhXPdDwmZAHjLjRzr4J5gdu9uQxS1PGgSMyIHvhc6H7YNIbMIdT4QWkcObcK8gU+KKGT/RlbArUHskgmBp01UYIbn5BsJO9/Hd27OKebz2LDLOpM6kHcRcv/yeR2n9PGIR52QArvWnMc2PaCp+FIF+k14SgVXQED85/D0r0gOjl5S9TJ4KG9tnxNkfVeWSh3ewe4Jw=
+  secret_access_key:
+    secure: dbXIgLNNvOgEhR1Y9QGAH0fQb+QVbgBLzld0sPNtcVtflRp81tgUV6enIH7EYxS3jlbQtVnu6wsuvy9i58mea+LTJN8hpuP5XfFt8CEDs55lmsqX6WLfCi3zUhl+ykRD3zixMMqZkW2XiDUm5ZtLtvcltrnYbQlWARKPYChr+9z8wrcHAks21a1yr4A/BoDfNFNIFCcPbV4xWH+ejDs+EJfQ3Hf7+E8xkHGb7/43RkY3GrCm/vc2FfprQ4WNNVIfyPRvrgqn0kJR+um/QXLEXQzL0KcNA8UmRmCryUqwgymEpHQMv4WUC/cO0wElLJHrW10tfCy+F6HcSYiYO3748ZG9ouaReTixAikrekSAyLKFmWRVoLQeUx8ZyTqkxJFH5v9uJz4WZxY9vmNuK2L+jhX03LK9FpL+AIgWTVzQ/Jni/48FjZBS46pu/9Kh8EMjeA8Ali/qDzSmG78NQ5LQBGUK2rua/3fenqlG28OwSwOiCe6DnX7TA/YcQvOP15+Y3CQoDytaIVCv8HPQgFG0jPg7869FZeqQV8UPmYViIGGno0E1XQqKfE8tlhrKec8Pz+qEY5pbHzMs8BJ9iTddsgzxhPRfll3QKCq/uxCfyE7JVBEuc/eyBx9sPsQd2n2S1aiGOg6yBObBv89EDjLGQcLTOCS10E1LCfKlRTypzcQ=
