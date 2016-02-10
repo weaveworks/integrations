@@ -23,6 +23,7 @@ deploy:
   skip_cleanup: true
   local_dir: cfn-to-publish
   upload_dir: integrations
+  acl: public_read
   on:
     branch: ci
   access_key_id:
