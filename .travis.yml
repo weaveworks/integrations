@@ -1,10 +1,11 @@
 sudo: false
 
-addons:
-  apt:
-    packages:
-      - awscli
-      - jq
+env:
+  - PATH="${PATH}:${HOME}/.local/bin"
+
+install:
+  - pip install --user awscli
 
 script:
-  - aws cloudformation validate-template --template-body file:////`pwd`/aws/ecs/cloudformation.json | jq .
+  - set -o pipefail
+  - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation.json" | jq .
