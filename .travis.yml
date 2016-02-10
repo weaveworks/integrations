@@ -25,7 +25,7 @@ deploy:
   upload_dir: integrations
   acl: public_read
   on:
-    branch: ci
+    branch: master
   access_key_id:
     secure: iVRdq/jeQ6hHNDjn4tiyvKnMZpntoGECAKKKh7Tnhbti6jdPvgAamiFocorFIScEz7SLGPN1xDHg04LQNpjJaJ2fsw5lb/J8QYZ/RxVmi7gKP7MatLJ1yFfCnQZF8/oEkPkQK3s18siL3Qkv9wuwuqnJIGNbVYWHuBdFPri1HPVKdr6XDyQiDq5CESMruuAGp2DxCfkWNk8svtiQooKNrDS7WI4AYqjIO7vr/vHSssaIe6WkE7ibajkIeL3mAPYmLhgFcsXtvPv9oy/egyHdLuzsglgqZ1aA/6+UwgM9zZY7adnWYFy2CXZedQCQOUqZegaKEkgYPEDykRaioUWUCMKv/7HovyZ9SffMzvGo3xNIgktk0ItZS0PU2ZfWGVfsGrrwrU+JT0192p3176I6dnXW+fbkW8NO+2n9Xx5m5kz69MFU7JRgbFSmjY0/J+ZRc5YD03sEwo4kekhs2NwV4KRES0X6rd9XPWjSyQhXPdDwmZAHjLjRzr4J5gdu9uQxS1PGgSMyIHvhc6H7YNIbMIdT4QWkcObcK8gU+KKGT/RlbArUHskgmBp01UYIbn5BsJO9/Hd27OKebz2LDLOpM6kHcRcv/yeR2n9PGIR52QArvWnMc2PaCp+FIF+k14SgVXQED85/D0r0gOjl5S9TJ4KG9tnxNkfVeWSh3ewe4Jw=
   secret_access_key:
