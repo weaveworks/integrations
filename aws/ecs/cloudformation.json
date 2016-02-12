@@ -15,28 +15,28 @@
     },
     "WeaveworksEcsAmiIds": {
       "us-east-1": {
-        "ImageId": "ami-a71431cd"
+        "ImageId": "ami-2b3b6041"
       },
       "us-west-1": {
-        "ImageId": "ami-24166244"
+        "ImageId": "ami-bfe095df"
       },
       "us-west-2": {
-        "ImageId": "ami-f2829893"
+        "ImageId": "ami-ac6872cd"
       },
       "eu-west-1": {
-        "ImageId": "ami-4b43e838"
+        "ImageId": "ami-03238b70"
       },
       "eu-central-1": {
-        "ImageId": "ami-6d504901"
+        "ImageId": "ami-e1e6f88d"
       },
       "ap-northeast-1": {
-        "ImageId": "ami-2f360a41"
+        "ImageId": "ami-fb2f1295"
       },
       "ap-southeast-1": {
-        "ImageId": "ami-03c40860"
+        "ImageId": "ami-c78f43a4"
       },
       "ap-southeast-2": {
-        "ImageId": "ami-e00b2e83"
+        "ImageId": "ami-43547120"
       }
     }
   },
@@ -106,6 +106,16 @@
       "Type": "String",
       "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
       "Default": ""
+    },
+    "WeaveNetVersion": {
+      "Type": "String",
+      "Description": "Version of Weave Net to install",
+      "Default": "v1.4.2"
+    },
+    "WeaveScopeVersion": {
+      "Type": "String",
+      "Description": "Version of Weave Scope to install",
+      "Default": "v0.11.1"
     }
   },
   "Conditions": {
@@ -505,33 +515,132 @@
         "UserData": {
           "Fn::Base64": {
             "Fn::Join": [
-              "",
+              "\n",
               [
-                "#!/bin/bash\n",
-                "echo ECS_CLUSTER=",
+                "#!/bin/bash -ex",
+                "yum install -y aws-cfn-bootstrap",
                 {
-                  "Ref": "EcsCluster"
-                },
-                " >> /etc/ecs/ecs.config\n",
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    "echo SERVICE_TOKEN=",
-                    ""
-                  ]
-                },
-                {
-                  "Ref": "WeaveScopeServiceToken"
-                },
-                {
-                  "Fn::If": [
-                    "UseScopeService",
-                    " >> /etc/weave/scope.config\n",
-                    ""
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/aws/bin/cfn-init",
+                      "--verbose",
+                      "--stack",
+                      {
+                        "Ref": "AWS::StackName"
+                      },
+                      "--region",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "--resource",
+                      "EcsInstanceLc"
+                    ]
                   ]
                 }
               ]
             ]
+          }
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "packages": {
+              "yum": {
+                "jq": []
+              },
+              "python": {
+                "awscli": []
+              }
+            },
+            "files": {
+              "/etc/ecs/ecs.config": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ECS_CLUSTER=",
+                      {
+                        "Ref": "EcsCluster"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "/etc/weave/scope.config": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          "SERVICE_TOKEN=",
+                          "## SERVICE_TOKEN="
+                        ]
+                      },
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          {
+                            "Ref": "WeaveScopeServiceToken"
+                          },
+                          "<unset>"
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              },
+              "/etc/init/ecs.override": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/ecs.override"
+              },
+              "/etc/init/weave.conf": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/weave.conf"
+              },
+              "/etc/init/scope.conf": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/scope.conf"
+              },
+              "/etc/weave/run.sh": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/run.sh",
+                "mode": "000755"
+              },
+              "/etc/weave/peers.sh": {
+                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/peers.sh",
+                "mode": "000755"
+              },
+              "/usr/local/bin/weave": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "https://github.com/weaveworks/weave/releases/download",
+                      {
+                        "Ref": "WeaveNetVersion"
+                      },
+                      "weave"
+                    ]
+                  ]
+                },
+                "mode": "000755"
+              },
+              "/usr/local/bin/scope": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "https://github.com/weaveworks/scope/releases/download",
+                      {
+                        "Ref": "WeaveScopeVersion"
+                      },
+                      "scope"
+                    ]
+                  ]
+                },
+                "mode": "000755"
+              }
+            }
           }
         }
       }
