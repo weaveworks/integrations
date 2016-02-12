@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
+  "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
   "Mappings": {
     "VpcCidrs": {
       "vpc": {
@@ -88,7 +88,7 @@
     },
     "KeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName",
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances",
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances (if none appear in drop-down menu, you need to create one)",
       "MinLength": "1",
       "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
     },
