@@ -1,0 +1,697 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
+  "Mappings": {
+    "VpcCidrs": {
+      "vpc": {
+        "cidr": "172.31.0.0/16"
+      },
+      "pubsubnet1": {
+        "cidr": "172.31.0.0/24"
+      },
+      "pubsubnet2": {
+        "cidr": "172.31.1.0/24"
+      }
+    },
+    "WeaveworksEcsAmiIds": {
+      "us-east-1": {
+        "ImageId": "ami-94b49bfe"
+      },
+      "us-west-1": {
+        "ImageId": "ami-912d5bf1"
+      },
+      "us-west-2": {
+        "ImageId": "ami-e6c82e86"
+      },
+      "eu-west-1": {
+        "ImageId": "ami-9063d5e3"
+      },
+      "eu-central-1": {
+        "ImageId": "ami-e8ebf384"
+      },
+      "ap-northeast-1": {
+        "ImageId": "ami-673b0109"
+      },
+      "ap-southeast-1": {
+        "ImageId": "ami-8f69a6ec"
+      },
+      "ap-southeast-2": {
+        "ImageId": "ami-2da1854e"
+      }
+    }
+  },
+  "Parameters": {
+    "EcsInstanceType": {
+      "Type": "String",
+      "Description": "ECS EC2 instance type",
+      "Default": "m3.medium",
+      "AllowedValues": [
+        "m3.medium",
+        "m3.large",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "m4.4xlarge",
+        "m4.10xlarge",
+        "c4.large",
+        "c4.xlarge",
+        "c4.2xlarge",
+        "c4.4xlarge",
+        "c4.8xlarge",
+        "c3.large",
+        "c3.xlarge",
+        "c3.2xlarge",
+        "c3.4xlarge",
+        "c3.8xlarge",
+        "r3.large",
+        "r3.xlarge",
+        "r3.2xlarge",
+        "r3.4xlarge",
+        "r3.8xlarge",
+        "i2.xlarge",
+        "i2.2xlarge",
+        "i2.4xlarge",
+        "i2.8xlarge"
+      ],
+      "ConstraintDescription": "must be a valid EC2 instance type."
+    },
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances (if none appear in drop-down menu, you need to create one)",
+      "MinLength": "1",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "DeployExampleApp": {
+      "Type": "String",
+      "Description": "Deploy example app",
+      "Default": "Yes",
+      "AllowedValues": [
+        "Yes",
+        "No"
+      ],
+      "ConstraintDescription": "must be Yes or No"
+    }
+  },
+  "Conditions": {
+    "DoDeployExampleApp": {
+      "Fn::Equals": [
+        {
+          "Ref": "DeployExampleApp"
+        },
+        "Yes"
+      ]
+    }
+  },
+  "Resources": {
+    "EcsCluster": {
+      "Type": "AWS::ECS::Cluster"
+    },
+    "EcsBackendDataTask": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Essential": true,
+            "Name": "redis",
+            "Image": "redis",
+            "Cpu": 10,
+            "Memory": 300
+          }
+        ],
+        "Volumes": []
+      }
+    },
+    "EcsBackendDataService": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "EcsCluster"
+        },
+        "DesiredCount": 1,
+        "TaskDefinition": {
+          "Ref": "EcsBackendDataTask"
+        }
+      }
+    },
+    "EcsFrontendAppTask": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "PortMappings": [
+              {
+                "HostPort": 80,
+                "ContainerPort": 5000
+              }
+            ],
+            "Essential": true,
+            "Name": "hit-counter",
+            "Image": "errordeveloper/hit-counter",
+            "Command": [
+              "python",
+              "app.py"
+            ],
+            "Cpu": 10,
+            "Memory": 300
+          }
+        ],
+        "Volumes": []
+      }
+    },
+    "EcsFrontendAppService": {
+      "Condition": "DoDeployExampleApp",
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Ref": "EcsCluster"
+        },
+        "DesiredCount": "2",
+        "TaskDefinition": {
+          "Ref": "EcsFrontendAppTask"
+        }
+      }
+    },
+    "Vpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "vpc",
+            "cidr"
+          ]
+        }
+      }
+    },
+    "PubSubnetAz1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "CidrBlock": {
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "pubsubnet1",
+            "cidr"
+          ]
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "0",
+            {
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "PubSubnetAz2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "CidrBlock": {
+          "Fn::FindInMap": [
+            "VpcCidrs",
+            "pubsubnet2",
+            "cidr"
+          ]
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            "1",
+            {
+              "Fn::GetAZs": {
+                "Ref": "AWS::Region"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "InternetGateway": {
+      "Type": "AWS::EC2::InternetGateway"
+    },
+    "AttachGateway": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "InternetGatewayId": {
+          "Ref": "InternetGateway"
+        }
+      }
+    },
+    "RouteViaIgw": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        }
+      }
+    },
+    "PublicRouteViaIgw": {
+      "DependsOn": "AttachGateway",
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "RouteViaIgw"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "InternetGateway"
+        }
+      }
+    },
+    "PubSubnet1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "PubSubnetAz1"
+        },
+        "RouteTableId": {
+          "Ref": "RouteViaIgw"
+        }
+      }
+    },
+    "PubSubnet2RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "PubSubnetAz2"
+        },
+        "RouteTableId": {
+          "Ref": "RouteViaIgw"
+        }
+      }
+    },
+    "EcsSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ECS Allowed Ports",
+        "VpcId": {
+          "Ref": "Vpc"
+        }
+      }
+    },
+    "EcsSecurityGroupIngressAppPort": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressSshPort": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressWeaveScopeExtPort": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4040",
+        "ToPort": "4040",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "EcsSecurityGroupIngressWeaveScopeIntPort": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4040",
+        "ToPort": "4040",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
+      }
+    },
+    "EcsSecurityGroupIngressWeaveNetIntTcpPort": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "6783",
+        "ToPort": "6783",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
+      }
+    },
+    "EcsSecurityGroupIngressWeaveNetIntUdpPorts": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "6783",
+        "ToPort": "6784",
+        "SourceSecurityGroupId": {
+          "Ref": "EcsSecurityGroup"
+        }
+      }
+    },
+    "EcsInstancePolicy": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "ClusterInstanceRole",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecs:CreateCluster",
+                    "ecs:DeregisterContainerInstance",
+                    "ecs:DiscoverPollEndpoint",
+                    "ecs:Poll",
+                    "ecs:RegisterContainerInstance",
+                    "ecs:Submit*",
+                    "ecs:ListClusters",
+                    "ecs:ListContainerInstances",
+                    "ecs:DescribeContainerInstances",
+                    "ec2:DescribeInstances",
+                    "autoscaling:DescribeAutoScalingInstances"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "EcsInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "EcsInstancePolicy"
+          }
+        ]
+      }
+    },
+    "EcsInstanceLc": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": {
+          "Fn::FindInMap": [
+            "WeaveworksEcsAmiIds",
+            {
+              "Ref": "AWS::Region"
+            },
+            "ImageId"
+          ]
+        },
+        "InstanceType": {
+          "Ref": "EcsInstanceType"
+        },
+        "AssociatePublicIpAddress": true,
+        "IamInstanceProfile": {
+          "Ref": "EcsInstanceProfile"
+        },
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "SecurityGroups": [
+          {
+            "Ref": "EcsSecurityGroup"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "\n",
+              [
+                "#cloud-config",
+                "coreos:",
+                "  update:",
+                "    reboot-strategy: 'off'",
+                "  units:",
+                "    - name: weave-network.target",
+                "      enable: true",
+                "      command: start",
+                "      content: |",
+                "        [Unit]",
+                "        Description=Weave Network Setup Complete",
+                "        Documentation=man:systemd.special(7)",
+                "        RefuseManualStart=no",
+                "        After=network-online.target",
+                "        [Install]",
+                "        WantedBy=multi-user.target",
+                "",
+                "    - name: 10-weave.network",
+                "      runtime: false",
+                "      content: |",
+                "        [Match]",
+                "        Type=bridge",
+                "        Name=weave*",
+                "        [Network]",
+                "",
+                "    - name: install-weave.service",
+                "      enable: true",
+                "      content: |",
+                "        [Unit]",
+                "        After=network-online.target",
+                "        After=docker.service",
+                "        Before=weave.service",
+                "        Description=Install Weave",
+                "        Documentation=http://docs.weave.works/",
+                "        Requires=network-online.target",
+                "        [Service]",
+                "        EnvironmentFile=-/etc/weave.%H.env",
+                "        EnvironmentFile=-/etc/weave.env",
+                "        Type=oneshot",
+                "        RemainAfterExit=yes",
+                "        TimeoutStartSec=0",
+                "        ExecStartPre=/bin/mkdir -p /opt/bin/",
+                "        ExecStartPre=/usr/bin/curl \\",
+                "          --silent \\",
+                "          --location \\",
+                "          https://git.io/weave \\",
+                "          --output /opt/bin/weave",
+                "        ExecStartPre=/usr/bin/chmod +x /opt/bin/weave",
+                "        ExecStart=/opt/bin/weave setup",
+                "        [Install]",
+                "        WantedBy=weave-network.target",
+                "        WantedBy=weave.service",
+                "",
+                "    - name: weaveproxy.service",
+                "      enable: true",
+                "      content: |",
+                "        [Unit]",
+                "        After=install-weave.service",
+                "        After=docker.service",
+                "        Description=Weave proxy for Docker API",
+                "        Documentation=http://docs.weave.works/",
+                "        Requires=docker.service",
+                "        Requires=install-weave.service",
+                "        [Service]",
+                "        EnvironmentFile=-/etc/weave.%H.env",
+                "        EnvironmentFile=-/etc/weave.env",
+                "        ExecStartPre=/opt/bin/weave launch-proxy \\",
+                "          --hostname-from-label com.amazonaws.ecs.container-name",
+                "        ExecStart=/usr/bin/docker attach weaveproxy",
+                "        Restart=on-failure",
+                "        ExecStop=/opt/bin/weave stop-proxy",
+                "        [Install]",
+                "        WantedBy=weave-network.target",
+                "",
+                "    - name: weave.service",
+                "      enable: true",
+                "      content: |",
+                "        [Unit]",
+                "        After=install-weave.service",
+                "        After=docker.service",
+                "        Description=Weave Network Router",
+                "        Documentation=http://docs.weave.works/",
+                "        Requires=docker.service",
+                "        Requires=install-weave.service",
+                "        [Service]",
+                "        TimeoutStartSec=0",
+                "        EnvironmentFile=-/etc/weave.%H.env",
+                "        EnvironmentFile=-/etc/weave.env",
+                "        ExecStartPre=/opt/bin/weave launch-router $WEAVE_PEERS",
+                "        ExecStart=/usr/bin/docker attach weave",
+                "        Restart=on-failure",
+                "        ExecStop=/opt/bin/weave stop-router",
+                "        [Install]",
+                "        WantedBy=weave-network.target",
+                "",
+                "    - name: amazon-ecs-agent.service",
+                "      command: start",
+                "      runtime: true",
+                "      content: |",
+                "        [Unit]",
+                "        Description=AWS ECS Agent",
+                "        Documentation=https://docs.aws.amazon.com/AmazonECS/latest/developerguide/",
+                "        Requires=docker.socket",
+                "        After=install-weave.service",
+                "        After=weaveproxy.service",
+                "        Requires=install-weave.service",
+                "        Requires=weaveproxy.service",
+                "        [Service]",
+                {
+                  "Fn::Join" : [
+                    "", [
+                      "        Environment=ECS_CLUSTER=",
+                      {
+                        "Ref": "EcsCluster"
+                      }
+                    ]
+                  ]
+                },
+                "        Environment=ECS_LOGLEVEL=info",
+                "        Environment=ECS_VERSION=latest",
+                "        Restart=on-failure",
+                "        RestartSec=30",
+                "        RestartPreventExitStatus=5",
+                "        SyslogIdentifier=ecs-agent",
+                "        ExecStartPre=-/bin/mkdir -p /var/log/ecs /var/ecs-data /etc/ecs",
+                "        ExecStartPre=-/usr/bin/touch /etc/ecs/ecs.config",
+                "        ExecStartPre=-/usr/bin/docker kill ecs-agent",
+                "        ExecStartPre=-/usr/bin/docker rm ecs-agent",
+                "        ExecStartPre=/usr/bin/docker pull amazon/amazon-ecs-agent:${ECS_VERSION}",
+                "        ExecStart=/usr/bin/docker run --name ecs-agent \\",
+                "                                      --env-file=/etc/ecs/ecs.config \\",
+                "                                      --volume=/var/run/weave/weave.sock:/var/run/docker.sock \\",
+                "                                      --volume=/var/log/ecs:/log \\",
+                "                                      --volume=/var/ecs-data:/data \\",
+                "                                      --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro \\",
+                "                                      --volume=/run/docker/execdriver/native:/var/lib/docker/execdriver/native:ro \\",
+                "                                      --publish=127.0.0.1:51678:51678 \\",
+                "                                      --env=ECS_LOGFILE=/log/ecs-agent.log \\",
+                "                                      --env=ECS_DATADIR=/data \\",
+                "                                      --env=ECS_LOGLEVEL \\",
+                "                                      --env=ECS_CLUSTER \\",
+                "                                      amazon/amazon-ecs-agent:${ECS_VERSION}",
+                "",
+                "    - name: scope.service",
+                "      enable: true",
+                "      content: |",
+                "        [Unit]",
+                "        After=network-online.target",
+                "        After=docker.service",
+                "        Description=Weave Scope",
+                "        Requires=network-online.target",
+                "        Requires=docker.service",
+                "        [Service]",
+                "        TimeoutStartSec=0",
+                "        ExecStartPre=/usr/bin/docker pull weaveworks/scope:latest",
+                "        ExecStartPre=-/usr/bin/docker rm -f weavescope",
+                "        ExecStart=/usr/bin/docker run \\",
+                "          --name=weavescope --net=host --pid=host --privileged=true \\",
+                "          --volume=/var/run/docker.sock:/var/run/docker.sock \\",
+                "          weaveworks/scope:latest \\",
+                "          --probe.docker=true",
+                "        [Install]",
+                "        WantedBy=weave-network.target",
+                "        WantedBy=weave.service",
+                ""
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EcsInstanceAsg": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "VPCZoneIdentifier": [
+          {
+            "Fn::Join": [
+              ",",
+              [
+                {
+                  "Ref": "PubSubnetAz1"
+                },
+                {
+                  "Ref": "PubSubnetAz2"
+                }
+              ]
+            ]
+          }
+        ],
+        "LaunchConfigurationName": {
+          "Ref": "EcsInstanceLc"
+        },
+        "MinSize": "1",
+        "MaxSize": "1",
+        "DesiredCapacity": "1",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "ECS Instance - ",
+                  {
+                    "Ref": "AWS::StackName"
+                  }
+                ]
+              ]
+            },
+            "PropagateAtLaunch": "true"
+          }
+        ]
+      }
+    }
+  }
+}
