@@ -621,6 +621,24 @@
                 "                                      --env=ECS_LOGLEVEL \\",
                 "                                      --env=ECS_CLUSTER \\",
                 "                                      amazon/amazon-ecs-agent:${ECS_VERSION}",
+                {
+                  "Fn::Join" : [
+                    "",
+                    [
+                      "        ExecStartPost=-/usr/bin/docker",
+                      " run",
+                      " --name=cfn-signal",
+                      " aweber/cfn-signal",
+                      " --success=true",
+                      " --reason=EcsAgentStarted",
+                      " --resource=EcsInstanceLc",
+                      " --stack=",
+                      {
+                        "Ref": "AWS::StackName"
+                      }
+                    ]
+                  ]
+                },
                 "",
                 "    - name: scope.service",
                 "      enable: true",
@@ -640,9 +658,9 @@
                 "          --volume=/var/run/docker.sock:/var/run/docker.sock \\",
                 "          weaveworks/scope:latest \\",
                 "          --probe.docker=true",
+                "        ExecStartPost=/usr/bin/docker run \\",
                 "        [Install]",
-                "        WantedBy=weave-network.target",
-                "        WantedBy=weave.service",
+                "        WantedBy=multi-user.target",
                 ""
               ]
             ]
