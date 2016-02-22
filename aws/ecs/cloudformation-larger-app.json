@@ -219,7 +219,7 @@
             "Command": [
               "/bin/sh",
               "-c",
-              "sed -n 's/nameserver \\([.0-9]*\\)/\\1 dns\\.weave\\.local/p' /etc/resolv.conf | head -1 >> /etc/hosts && nginx -g daemon off\\;"
+              "sed -n 's/nameserver \\([.0-9]*\\)/\\1 dns\\.weave\\.local/p' /etc/resolv.conf | head -1 >> /etc/hosts && nginx -g 'daemon off;'"
             ],
             "Image": "tomwilkie/frontend",
             "Cpu": 10,
