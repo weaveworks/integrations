@@ -1,0 +1,11 @@
+#!/bin/sh -x
+for s in xoonr9kh31z4s51yr9zb5dkahw5nncyo s4kk8d6ustqi4dyxbn7ugn6yjg3cyz7c ggha7o1bbxzcq4bsrzzuekzjxpsuac1a ; do
+  aws --profile weaveworks --region us-east-1 cloudformation create-stack --template-body file://./cloudformation-larger-app.json \
+    --stack-name strss-${s} \
+    --parameters \
+      ParameterKey=KeyName,ParameterValue=ilya \
+      ParameterKey=WeaveScopeVersion,ParameterValue=latest \
+      ParameterKey=WeaveScopeServiceEndpoint,ParameterValue=frontend.dev.weave.works:80 \
+      ParameterKey=WeaveScopeServiceToken,ParameterValue=${s} \
+    --capabilities CAPABILITY_IAM
+done

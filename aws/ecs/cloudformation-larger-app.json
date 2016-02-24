@@ -107,6 +107,11 @@
       "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
       "Default": ""
     },
+    "WeaveScopeServiceEndpoint": {
+      "Type": "String",
+      "Description": "Optional - API endpoint for Weave Scope service",
+      "Default": ""
+    },
     "WeaveNetVersion": {
       "Type": "String",
       "Description": "Version of Weave Net to install",
@@ -137,6 +142,26 @@
             ""
           ]
         }
+      ]
+    },
+    "UseAltScopeServiceEndpoint": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "WeaveScopeServiceEndpoint"
+            },
+            ""
+          ]
+        }
+      ]
+    },
+    "UseScopeCanary": {
+      "Fn::Equals": [
+        {
+          "Ref": "WeaveScopeVersion"
+        },
+        "latest"
       ]
     }
   },
@@ -608,22 +633,52 @@
               "/etc/weave/scope.config": {
                 "content": {
                   "Fn::Join": [
-                    "",
+                    "\n",
                     [
                       {
-                        "Fn::If": [
-                          "UseScopeService",
-                          "SERVICE_TOKEN=",
-                          "## SERVICE_TOKEN="
+                        "Fn::Join": [
+                          "=",
+                          [
+                            {
+                              "Fn::If": [
+                                "UseScopeService",
+                                "SERVICE_TOKEN",
+                                "## SERVICE_TOKEN"
+                              ]
+                            },
+                            {
+                              "Fn::If": [
+                                "UseScopeService",
+                                {
+                                  "Ref": "WeaveScopeServiceToken"
+                                },
+                                "<unset>"
+                              ]
+                            }
+                          ]
                         ]
                       },
                       {
-                        "Fn::If": [
-                          "UseScopeService",
-                          {
-                            "Ref": "WeaveScopeServiceToken"
-                          },
-                          "<unset>"
+                        "Fn::Join": [
+                          "=",
+                          [
+                            {
+                              "Fn::If": [
+                                "UseAltScopeServiceEndpoint",
+                                "SERVICE_ENDPOINT",
+                                "## SERVICE_ENDPOINT"
+                              ]
+                            },
+                            {
+                              "Fn::If": [
+                                "UseAltScopeServiceEndpoint",
+                                {
+                                  "Ref": "WeaveScopeServiceEndpoint"
+                                },
+                                "<unset>"
+                              ]
+                            }
+                          ]
                         ]
                       }
                     ]
@@ -640,7 +695,7 @@
                 "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/scope.conf"
               },
               "/etc/weave/run.sh": {
-                "source": "https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/run.sh",
+                "source": "https://raw.github.com/weaveworks/integrations/service-stress-test/aws/ecs/packer/to-upload/run.sh",
                 "mode": "000755"
               },
               "/etc/weave/peers.sh": {
@@ -664,15 +719,21 @@
               },
               "/usr/local/bin/scope": {
                 "source": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      "https://github.com/weaveworks/scope/releases/download",
-                      {
-                        "Ref": "WeaveScopeVersion"
-                      },
-                      "scope"
-                    ]
+                  "Fn::If": [
+                    "UseScopeCanary",
+                    "https://raw.githubusercontent.com/weaveworks/scope/master/scope",
+                    {
+                      "Fn::Join": [
+                        "/",
+                        [
+                          "https://github.com/weaveworks/scope/releases/download",
+                          {
+                            "Ref": "WeaveScopeVersion"
+                          },
+                          "scope"
+                        ]
+                      ]
+                    }
                   ]
                 },
                 "mode": "000755"

@@ -37,6 +37,9 @@ run_scope() {
 	if [ -n "${SERVICE_TOKEN+x}" ]; then
 	    ARGS="$ARGS --service-token=$SERVICE_TOKEN"
 	fi
+	if [ -n "${SERVICE_ENDPOINT+x}" ]; then
+	    ARGS="$ARGS $SERVICE_ENDPOINT"
+	fi
 	PEERS=$(succeed_or_die /etc/weave/peers.sh)
 	ARGS="$ARGS 127.0.0.1 $PEERS"
 	succeed_or_die scope launch $ARGS
