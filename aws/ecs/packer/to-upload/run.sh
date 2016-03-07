@@ -27,11 +27,10 @@ run_scope() {
 	    . /etc/weave/scope.config
 	fi
 	if [ -n "${SERVICE_TOKEN+x}" ]; then
-	    ARGS="$ARGS --service-token=$SERVICE_TOKEN"
+	    succeed_or_die scope launch "--service-token=$SERVICE_TOKEN"
 	fi
-	PEERS=$(succeed_or_die /etc/weave/peers.sh)
-	ARGS="$ARGS 127.0.0.1 $PEERS"
-	succeed_or_die scope launch $ARGS
+	# Connect to the Scope apps in the weave network
+	succeed_or_die scope launch
     done
 }
 
