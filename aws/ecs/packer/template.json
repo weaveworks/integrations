@@ -48,7 +48,7 @@
       "sudo yum -y install python-pip jq",
       "sudo python-pip install awscli",
 
-      "sudo curl -L https://github.com/weaveworks/weave/releases/download/v1.4.2/weave -o /usr/local/bin/weave",
+      "sudo curl -L https://github.com/weaveworks/weave/releases/download/v1.4.5/weave -o /usr/local/bin/weave",
       "sudo chmod +x /usr/local/bin/weave",
       "sudo /usr/local/bin/weave setup",
 
