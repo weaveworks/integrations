@@ -62,10 +62,11 @@ Besides the Amazon ECS API actions required by all container instances,
 (particularily those indicated in the
 [`AmazonEC2ContainerServiceforEC2Role`](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html)
 managed policy), to ensure that instance peers can be discovered, any instances
-using the Weave ECS AMI also require the following two actions:
+using the Weave ECS AMI also require the following three actions:
 
 1. `ec2:DescribeInstances`
-2. `autoscaling:DescribeAutoScalingInstances`
+2. `ec2:DescribeTags`
+3. `autoscaling:DescribeAutoScalingInstances`
 
 [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/master/aws-ecs/data/weave-ecs-policy.json#L16-L17)
 (see the guide
@@ -75,20 +76,24 @@ which describes the minimal policy definition.)
 For more information on IAM policies see
 [IAM Policies for Amazon EC2](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-policies-for-amazon-ec2.html).
 
-### 3. Auto Scaling Group Membership
+### 3. Peer discovery requirements
 
-Amazon ECS container instances must be a member of an
+To form a Weave network, the Amazon ECS container instances must either/or:
+* be a member of an
 [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html)
-to join a Weave network.
+* be [tagged](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html) as `weave:peerGroupName=foo`, where `foo` is a groupname of your choince
 
 ## Peer Discovery
 
-At boot time, instances running the ECS Weave AMI form a Weave network with all
-the other instances in the same
-[Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
+At boot time, an instance running the ECS Weave AMI will try to join other instances to form a Weave network.
 
-The `Weave Scope` probes also report back to the apps running in all the instances from the same auto scaling group when
-running in standalone mode.
+* If the instance is
+  [tagged](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
+  with `weave:peerGroupName=foo`, it will join other instances also
+  tagged as `weave:peerGroupName=foo`.
+* Otherwise it will join all the other instances in the same [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
+
+When running `Weave Scope` in Standalone mode, probes discover apps using the same mechanism.
 
 ## Weave Scope
 
