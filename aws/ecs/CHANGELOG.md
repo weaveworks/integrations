@@ -1,3 +1,13 @@
+## Weaveworks ECS Image (2016-03-08)
+
+New features:
+- Use weave:peerGroupName tag to identify peers [#75](https://github.com/weaveworks/integrations/pull/75)
+- Discover Weave Apps using the Weave Network [#79](https://github.com/weaveworks/integrations/pull/79)
+- Upgrade base AMI to `2015.09.g` [#81](https://github.com/weaveworks/integrations/pull/82)
+- Upgrade Weave Net to version 1.4.5 [#80](https://github.com/weaveworks/integrations/pull/80)
+- Upgrade Weave Scope to version 0.13.1 [#78](https://github.com/weaveworks/integrations/pull/78)
+
+
 ## Weaveworks ECS Image (2016-01-15)
 
 New features:
