@@ -89,9 +89,12 @@ At boot time, an instance running the ECS Weave AMI will try to join other insta
 
 * If the instance is
   [tagged](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
-  with `weave:peerGroupName=foo`, it will join other instances also
-  tagged as `weave:peerGroupName=foo`.
-* Otherwise it will join all the other instances in the same [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
+  with `weave:peerGroupName=foo`, it will join other instances also tagged as
+  `weave:peerGroupName=foo`. Note that for this to work, the instances need to
+  be tagged immediately after creation so that the tag is available by the time
+  Weave is launched.
+* Otherwise it will join all the other instances in the same
+  [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
 
 When running `Weave Scope` in Standalone mode, probes discover apps using the same mechanism.
 
