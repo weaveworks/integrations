@@ -1,3 +1,8 @@
+## Weaveworks ECS Image (2016-03-11)
+
+Bug fixes:
+- Fix Scope Cloud Service mode [#85](https://github.com/weaveworks/integrations/issues/85)
+
 ## Weaveworks ECS Image (2016-03-08)
 
 New features:
