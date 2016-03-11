@@ -28,9 +28,10 @@ run_scope() {
 	fi
 	if [ -n "${SERVICE_TOKEN+x}" ]; then
 	    succeed_or_die scope launch "--service-token=$SERVICE_TOKEN"
+	else
+	    # Connect to the Scope apps in the weave network
+	    succeed_or_die scope launch
 	fi
-	# Connect to the Scope apps in the weave network
-	succeed_or_die scope launch
     done
 }
 
