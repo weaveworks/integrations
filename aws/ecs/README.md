@@ -92,7 +92,7 @@ At boot time, an instance running the ECS Weave AMI will try to join other insta
   with key `weave:peerGroupName`, it will join other instances with the same tag key and value.
   For instance, if the tag key is `weave:peerGroupName` and the value is `foo` it will try
   to join other instances with tag key `weave:peerGroupName` and tag value `foo`.
-  Note that for this to work, the instances need to be tagged immediately after creation so that
+  Note that for this to work, the instances need to be tagged at creation-time so that
   the tag is available by the time Weave is launched.
 * Otherwise it will join all the other instances in the same
   [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
