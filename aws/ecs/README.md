@@ -65,7 +65,7 @@ Besides the customary Amazon ECS API actions required by all container instances
 2. `ec2:DescribeTags`
 3. `autoscaling:DescribeAutoScalingInstances`
 
-These extra actions are needed for discovering instance peers. [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/41f1f5a60d39d39b78f0e06e224a7c3bad30c4e8/aws-ecs/data/weave-ecs-policy.json#L16-L18) from the
+These extra actions are needed for discovering instance peers. [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/41f1f5a60d39d39b78f0e06e224a7c3bad30c4e8/aws-ecs/data/weave-ecs-policy.json#L16-L18) (from the
 [Weaveworks ECS guide](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)), describes the minimal policy definition.
 
 For more information on IAM policies see
