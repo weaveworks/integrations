@@ -80,19 +80,20 @@ For more information on IAM policies see
 
 To form a Weave network, the Amazon ECS container instances must either/or:
 * be a member of an
-[Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html)
-* be [tagged](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html) as `weave:peerGroupName=foo`, where `foo` is a groupname of your choince
+[Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
+* have a [tag](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html) with key `weave:peerGroupName`.
 
 ## Peer Discovery
 
 At boot time, an instance running the ECS Weave AMI will try to join other instances to form a Weave network.
 
-* If the instance is
-  [tagged](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
-  with `weave:peerGroupName=foo`, it will join other instances also tagged as
-  `weave:peerGroupName=foo`. Note that for this to work, the instances need to
-  be tagged immediately after creation so that the tag is available by the time
-  Weave is launched.
+* If the instance has a
+  [tag](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
+  with key `weave:peerGroupName`, it will join other instances with the same tag key and value.
+  For instance, if the tag key is `weave:peerGroupName` and the value is `foo` it will try
+  to join other instances with tag key `weave:peerGroupName` and tag value `foo`.
+  Note that for this to work, the instances need to be tagged immediately after creation so that
+  the tag is available by the time Weave is launched.
 * Otherwise it will join all the other instances in the same
   [Auto Scaling Group](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingGroup.html).
 
