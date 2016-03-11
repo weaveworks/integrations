@@ -56,22 +56,17 @@ script from
 [Service Discovery and Load Balancing with Weave on Amazon ECS](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)
 for an example.
 
-### 2. Additional Amazon ECS API action permissions
+### 2. Additional IAM action permissions
 
-Besides the Amazon ECS API actions required by all container instances,
-(particularily those indicated in the
-[`AmazonEC2ContainerServiceforEC2Role`](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html)
-managed policy), to ensure that instance peers can be discovered, any instances
-using the Weave ECS AMI also require the following three actions:
+Besides the customary Amazon ECS API actions required by all container instances
+(see the [`AmazonEC2ContainerServiceforEC2Role`](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance_IAM_role.html) managed policy), any instances using the Weaveworks ECS AMI must also be allowed to perform the following three actions:
 
 1. `ec2:DescribeInstances`
 2. `ec2:DescribeTags`
 3. `autoscaling:DescribeAutoScalingInstances`
 
-[`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/master/aws-ecs/data/weave-ecs-policy.json#L16-L17)
-(see the guide
-[Service Discovery and Load Balancing with Weave on Amazon ECS](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)
-which describes the minimal policy definition.)
+These extra actions are needed for discovering instance peers. [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/41f1f5a60d39d39b78f0e06e224a7c3bad30c4e8/aws-ecs/data/weave-ecs-policy.json#L16-L18) from the
+[Weaveworks ECS guide](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)), describes the minimal policy definition.
 
 For more information on IAM policies see
 [IAM Policies for Amazon EC2](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-policies-for-amazon-ec2.html).
