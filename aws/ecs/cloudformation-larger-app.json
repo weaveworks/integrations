@@ -222,6 +222,12 @@
               "sed -n 's/nameserver \\([.0-9]*\\)/\\1 dns\\.weave\\.local/p' /etc/resolv.conf | head -1 >> /etc/hosts && nginx -g 'daemon off;'"
             ],
             "Image": "tomwilkie/frontend",
+            "PortMappings": [
+              {
+                "HostPort": 80,
+                "ContainerPort": 80
+              }
+            ],
             "Cpu": 10,
             "Memory": 300
           },
