@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
+  "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.  This template uses a larger example app.",
   "Mappings": {
     "VpcCidrs": {
       "vpc": {

@@ -13,11 +13,13 @@ script:
   - set -o pipefail
   - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation.json" | jq .
   - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-larger-app.json" | jq .
+  - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-minimal.json" | jq .
 
 after_success:
   - mkdir cfn-to-publish
   - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation.json" > cfn-to-publish/ecs-baseline.json
   - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-larger-app.json" > cfn-to-publish/ecs-larger-app.json
+  - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-minimal.json" > cfn-to-publish/ecs-minimal.json
 
 deploy:
   provider: s3
