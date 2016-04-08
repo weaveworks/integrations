@@ -111,18 +111,6 @@
         },
         "Yes"
       ]
-    },
-    "UseScopeService": {
-      "Fn::Not": [
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "WeaveScopeServiceToken"
-            },
-            ""
-          ]
-        }
-      ]
     }
   },
   "Resources": {
