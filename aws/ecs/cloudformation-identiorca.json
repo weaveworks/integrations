@@ -638,6 +638,11 @@
         "DesiredCapacity": {
           "Ref": "Scale"
         },
+        "LoadBalancerNames": [
+          {
+            "Ref": "ElasticLoadBalancer"
+          }
+        ],
         "Tags": [
           {
             "Key": "Name",
@@ -653,6 +658,31 @@
               ]
             },
             "PropagateAtLaunch": "true"
+          }
+        ]
+      }
+    },
+    "EcsFrontendElasticLoadBalancing": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "DependsOn": "InternetGateway",
+      "Properties": {
+        "Listeners": [
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "80",
+            "InstanceProtocol": "HTTP",
+            "Protocol": "HTTP"
+          },
+          {
+            "InstancePort": "4040",
+            "LoadBalancerPort": "4040",
+            "InstanceProtocol": "TCP",
+            "Protocol": "TCP"
+          }
+        ],
+        "SecurityGroups": [
+          {
+            "Ref": "EcsSecurityGroup"
           }
         ]
       }
