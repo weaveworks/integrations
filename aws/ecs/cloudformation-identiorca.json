@@ -722,6 +722,14 @@
           {
             "Ref": "EcsSecurityGroup"
           }
+        ],
+        "Subnets": [
+          {
+            "Ref": "PubSubnetAz1"
+          },
+          {
+            "Ref": "PubSubnetAz2"
+          }
         ]
       }
     }
