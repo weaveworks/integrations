@@ -1,6 +1,44 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.  This template uses a larger example app.",
+  "Outputs": {
+    "AppFrontend": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "http://",
+            {
+              "Fn::GetAtt": [
+                "EcsFrontendElasticLoadBalancing",
+                "DNSName"
+              ]
+            },
+            "80"
+          ]
+        ]
+      },
+      "Description": "Identiorca app frontend"
+    },
+    "WeaveScope": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "http://",
+            {
+              "Fn::GetAtt": [
+                "EcsFrontendElasticLoadBalancing",
+                "DNSName"
+              ]
+            },
+            "4040"
+          ]
+        ]
+      },
+      "Description": "Weave Scope UI"
+    }
+  },
   "Mappings": {
     "VpcCidrs": {
       "vpc": {
@@ -161,10 +199,10 @@
             "Essential": true,
             "Name": "identiorca",
             "Image": "errordeveloper/identiorca",
-            "Environment" : [
+            "Environment": [
               {
-                "Name" : "USE_IP_ADDR",
-                "Value" : "yes"
+                "Name": "USE_IP_ADDR",
+                "Value": "yes"
               }
             ],
             "Cpu": 10,
