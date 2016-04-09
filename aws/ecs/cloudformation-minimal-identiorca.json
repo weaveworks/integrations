@@ -163,8 +163,8 @@
             "Image": "errordeveloper/identiorca",
             "Environment" : [
               {
-                "name" : "USE_IP_ADDR",
-                "value" : "yes"
+                "Name" : "USE_IP_ADDR",
+                "Value" : "yes"
               }
             ],
             "Cpu": 10,
