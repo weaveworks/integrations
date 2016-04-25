@@ -1,3 +1,12 @@
+## Weaveworks ECS Image (2016-04-25)
+
+New features:
+- Upgrade base AMI to `2016.03.a`, upgrade Weave Net to version 1.5.0 and Weave Scope to version 0.14.0 [#91](https://github.com/weaveworks/integrations/pull/91)
+- Use upstream packer [#90](https://github.com/weaveworks/integrations/pull/90)
+
+Bug fixes:
+- Launch Weave Scope correctly in Service mode [31e2c2640](https://github.com/weaveworks/integrations/commit/31e2c26405f52b3731684369185d9c868a08d281)
+
 ## Weaveworks ECS Image (2016-03-08)
 
 New features:
