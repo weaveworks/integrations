@@ -166,13 +166,8 @@ git clone https://github.com/weaveworks/integrations
 cd aws/ecs/packer
 ~~~
 
-Download an SFTP-enabled version of [Packer](https://www.packer.io/) (needed
-until https://github.com/mitchellh/packer/pull/2504 is merged) to build the AMI.
+Download and install [Packer](https://www.packer.io/) version >=0.9 to build the AMI.
 
-~~~bash
-wget https://dl.bintray.com/2opremio/generic/packer-sftp_0.8.1_linux_amd64.zip
-unzip packer-sftp_0.8.1_linux_amd64.zip -d ~/bin
-~~~
 
 Finally, invoke `./build-all-amis.sh` to build the `Weave ECS` images for all
 regions. This step installs (in the image) the version of ecs-init we just

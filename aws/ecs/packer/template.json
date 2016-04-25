@@ -13,10 +13,11 @@
     "region": "{{user `aws_region`}}",
     "source_ami": "{{user `source_ami`}}",
     "instance_type": "t2.micro",
-    "ssh_username": "ec2-user",
     "ami_name": "Weaveworks ECS Image ({{isotime \"2006-01-02\"}})",
     "ami_groups": "{{user `ami_groups`}}",
     "communicator": "ssh",
+    "ssh_username": "ec2-user",      
+    "ssh_file_transfer_method": "sftp",  
     "ssh_pty": true
   }],
 
