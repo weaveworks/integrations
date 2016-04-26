@@ -139,6 +139,11 @@
         "No"
       ],
       "ConstraintDescription": "must be Yes or No"
+    },
+    "WeaveScopeServiceToken": {
+      "Type": "String",
+      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]. Leave empty to run Scope in Standalone Mode.",
+      "Default": ""
     }
   },
   "Conditions": {
@@ -148,6 +153,18 @@
           "Ref": "DeployExampleApp"
         },
         "Yes"
+      ]
+    },
+    "UseScopeService": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "WeaveScopeServiceToken"
+            },
+            ""
+          ]
+        }
       ]
     }
   },
@@ -594,8 +611,22 @@
                   "Fn::Join": [
                     "",
                     [
-                      "## SERVICE_TOKEN=",
-                      "<unset>"
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          "SERVICE_TOKEN=",
+                          "## SERVICE_TOKEN="
+                        ]
+                      },
+                      {
+                        "Fn::If": [
+                          "UseScopeService",
+                          {
+                            "Ref": "WeaveScopeServiceToken"
+                          },
+                          "<unset>"
+                        ]
+                      }
                     ]
                   ]
                 }
