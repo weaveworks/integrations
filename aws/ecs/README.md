@@ -3,7 +3,7 @@ https://github.com/weaveworks/integrations/tree/master/aws/ecs#weaves-ecs-amis
 will break -->
 # Weave's ECS AMIs
 
-To make [Weave Net](http://weave.works/net), [Weave Run](http://weave.works/run)
+To make [Weave Net](http://weave.works/net)
 and [Weave Scope](http://weave.works/scope) easier to use with
 [Amazon ECS](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html),
 a set of Amazon Machine Images (AMIs) are provided. These AMIs are fully
