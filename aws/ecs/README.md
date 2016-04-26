@@ -170,9 +170,8 @@ Download and install [Packer](https://www.packer.io/) version >=0.9 to build the
 
 
 Finally, invoke `./build-all-amis.sh` to build the `Weave ECS` images for all
-regions. This step installs (in the image) the version of ecs-init we just
-built, AWS-CLI, jq, Weave/master, init scripts for `Weave` and it also updates the ECS
-agent to use the `Weave Docker API Proxy`.
+regions. This step installs (in the image) AWS-CLI, jq, Weave/master, init scripts
+for `Weave` and it also updates the ECS agent to use the `Weave Docker API Proxy`.
 
 Customize the image by modifying `template.json` to match your
 requirements.
