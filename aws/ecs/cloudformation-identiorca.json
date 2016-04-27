@@ -81,7 +81,7 @@
   "Parameters": {
     "EcsInstanceType": {
       "Type": "String",
-      "Description": "ECS EC2 instance type",
+      "Description": "Type of the EC2 instance(s) to deploy",
       "Default": "t2.micro",
       "AllowedValues": [
         "t2.micro",
@@ -132,7 +132,7 @@
     },
     "DeployExampleApp": {
       "Type": "String",
-      "Description": "Deploy example app",
+      "Description": "No: only Weave Net/Scope net will be deployed, Yes: also deploy identiorca example application",
       "Default": "Yes",
       "AllowedValues": [
         "Yes",
