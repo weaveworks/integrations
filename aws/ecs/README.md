@@ -3,8 +3,8 @@ https://github.com/weaveworks/integrations/tree/master/aws/ecs#weaves-ecs-amis
 will break -->
 # Weave's ECS AMIs
 
-To make [Weave Net](http://weave.works/net)
-and [Weave Scope](http://weave.works/scope) easier to use with
+To make [Weave Net](http://weave.works/net) and
+[Weave Scope](http://weave.works/scope) easier to use with
 [Amazon ECS](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html),
 a set of Amazon Machine Images (AMIs) are provided. These AMIs are fully
 compatible with the
@@ -18,33 +18,33 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-49617b23 |
-| us-west-1      | ami-24057b44 |
-| us-west-2      | ami-3cac5c5c |
-| eu-west-1      | ami-1025aa63 |
-| eu-central-1   | ami-e010f38f |
-| ap-northeast-1 | ami-54d5cc3a |
-| ap-southeast-1 | ami-664d9905 |
-| ap-southeast-2 | ami-c2e9c4a1 |
+| us-east-1      | ami-6b52a906 |
+| us-west-1      | ami-66cfb506 |
+| us-west-2      | ami-b6946ed6 |
+| eu-west-1      | ami-da8c10a9 |
+| eu-central-1   | ami-b1a54cde |
+| ap-northeast-1 | ami-13f61e72 |
+| ap-southeast-1 | ami-547bab37 |
+| ap-southeast-2 | ami-4d38112e |
 
 
 ## What's in the Weave ECS AMIs?
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2016.03.a` and also includes:
+version `2016.03.c` and also includes:
 
-* [Weave Net and Weave Run 1.5.0](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-150)
-* [Weave Scope 0.14.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0140)
+* [Weave Net 1.5.2](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-152)
+* [Weave Scope 0.15.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0150)
 
 
 ## Deployment Requirements
 
 ### 1. Required open ports
 
-For `Weave Net` and `Weave Run` to function properly, ensure that the Amazon ECS
-container instances can communicate over these ports: TCP 6783, as well as, UDP
-6783 and UDP 6784.
+For `Weave Net` to function properly, ensure that the Amazon ECS container
+instances can communicate over these ports: TCP 6783, as well as, UDP 6783 and
+UDP 6784.
 
 In addition to those open ports, launching `Weave Scope` in standalone mode,
 requires that all instances are able to communicate over TCP port 4040 (more on
