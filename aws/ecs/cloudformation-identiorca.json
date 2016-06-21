@@ -654,7 +654,7 @@
                     "/",
                     [
                       "https://github.com/weaveworks/weave/releases/download",
-                      "v1.5.2",
+                      "v1.6.0",
                       "weave"
                     ]
                   ]
@@ -667,7 +667,7 @@
                     "/",
                     [
                       "https://github.com/weaveworks/scope/releases/download",
-                      "v0.15.0",
+                      "v0.16.0",
                       "scope"
                     ]
                   ]
