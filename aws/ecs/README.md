@@ -98,10 +98,10 @@ When running `Weave Scope` in Standalone mode, probes discover apps using the sa
 
 There are two methods for running `Weave Scope` within the Weave ECS AMIs:
 
-* [Standalone mode](https://github.com/weaveworks/scope#using-weave-scope-in-standalone-mode) (default)
-* [Cloud service mode](https://github.com/weaveworks/scope#using-weave-scope-in-cloud-service-mode)
+* [Standalone mode](https://github.com/weaveworks/scope#running-weave-scope-in-standalone-mode) (default)
+* [In Weave Cloud](https://github.com/weaveworks/scope#running-weave-scope-in-weave-cloud)
 
-###Using `Weave Scope` in Standalone Mode
+###Running `Weave Scope` in Standalone Mode
 
 Running `Weave Scope` in standalone mode is the default mode.
 
@@ -127,23 +127,21 @@ port 4040. Ensure that your Amazon ECS container instances can talk to each
 other on that port before running `Weave Scope` in standalone mode (see the
 [Required open ports](#1.-required-open-ports) for more details).
 
-###Using `Weave Scope` in Cloud Service Mode
+###Running `Weave Scope` in Weave Cloud
 
-In cloud service mode, you can visualize Amazon ECS containers using your
-account at [http://scope.weave.works](http://scope.weave.works). For that
+In Weave Cloud, you can visualize Amazon ECS containers using your
+account at [http://cloud.weave.works](http://cloud.weave.works). For that
 purpose, Amazon ECS container instances run a `Weave Scope` probe and reports
-data from the container instances to the `Weave Scope` service at
-[http://scope.weave.works](http://scope.weave.works).
+data from the container instances to [Weave Cloud](http://cloud.weave.works).
 
-To configure your ECS container instances to run `Weave Scope` in cloud service
-mode, store the `Weave Scope` service token in the`/etc/weave/scope.config`
+To configure your ECS container instances to communicate with Weave Cloud,
+store the `Weave Scope` service token in the`/etc/weave/scope.config`
 file.
 
->Note: The `Weave Scope` service token can be found in your `Weave Scope` service account at [http://scope.weave.works](http://scope.weave.works).
+>Note: The `Weave Scope` service token can be found in your Weave Cloud account at [http://cloud.weave.works](http://cloud.weave.works).
 
-For example, this command configures the instance to start `Weave Scope` in
-cloud service mode and to use the `Weave Scope` service token
-`3hud3h6ys3jhg9bq66n8xxa4b147dt5z`.
+For example, this command configures the instance to communicate with Weave
+Cloud using token `3hud3h6ys3jhg9bq66n8xxa4b147dt5z`.
 
 ~~~bash
 echo SCOPE_AAS_PROBE_TOKEN=3hud3h6ys3jhg9bq66n8xxa4b147dt5z >> /etc/weave/scope.config
