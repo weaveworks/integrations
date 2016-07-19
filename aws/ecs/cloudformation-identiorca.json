@@ -3,6 +3,7 @@
   "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.  This template uses a larger example app.",
   "Outputs": {
     "AppFrontend": {
+      "Condition": "DoDeployExampleApp",
       "Value": {
         "Fn::Join": [
           "",
@@ -21,6 +22,7 @@
       "Description": "Identiorca app frontend"
     },
     "WeaveScope": {
+      "Condition": "UseWeaveScopeStandalone",
       "Value": {
         "Fn::Join": [
           "",
@@ -140,9 +142,9 @@
       ],
       "ConstraintDescription": "must be Yes or No"
     },
-    "WeaveScopeServiceToken": {
+    "WeaveCloudServiceToken": {
       "Type": "String",
-      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]. Leave empty to run Scope in Standalone Mode.",
+      "Description": "Optional - Authentication token for Weave Cloud [https://cloud.weave.works/]. Leave empty to run Scope in Standalone Mode.",
       "Default": ""
     }
   },
@@ -155,16 +157,12 @@
         "Yes"
       ]
     },
-    "UseScopeService": {
-      "Fn::Not": [
+    "UseWeaveScopeStandalone": {
+      "Fn::Equals": [
         {
-          "Fn::Equals": [
-            {
-              "Ref": "WeaveScopeServiceToken"
-            },
-            ""
-          ]
-        }
+          "Ref": "WeaveCloudServiceToken"
+        },
+        ""
       ]
     }
   },
@@ -613,18 +611,18 @@
                     [
                       {
                         "Fn::If": [
-                          "UseScopeService",
-                          "SERVICE_TOKEN=",
-                          "## SERVICE_TOKEN="
+                          "UseWeaveScopeStandalone",
+                          "## SERVICE_TOKEN=",
+                          "SERVICE_TOKEN="
                         ]
                       },
                       {
                         "Fn::If": [
-                          "UseScopeService",
+                          "UseWeaveScopeStandalone",
+                          "<unset>",
                           {
-                            "Ref": "WeaveScopeServiceToken"
-                          },
-                          "<unset>"
+                            "Ref": "WeaveCloudServiceToken"
+                          }
                         ]
                       }
                     ]
@@ -737,16 +735,32 @@
       "Properties": {
         "Listeners": [
           {
-            "InstancePort": "80",
-            "LoadBalancerPort": "80",
-            "InstanceProtocol": "HTTP",
-            "Protocol": "HTTP"
+            "Fn::If": [
+              "DoDeployExampleApp",
+              {
+                "InstancePort": "80",
+                "LoadBalancerPort": "80",
+                "InstanceProtocol": "HTTP",
+                "Protocol": "HTTP"
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
           },
           {
-            "InstancePort": "4040",
-            "LoadBalancerPort": "4040",
-            "InstanceProtocol": "TCP",
-            "Protocol": "TCP"
+            "Fn::If": [
+              "UseWeaveScopeStandalone",
+              {
+                "InstancePort": "4040",
+                "LoadBalancerPort": "4040",
+                "InstanceProtocol": "TCP",
+                "Protocol": "TCP"
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
           }
         ],
         "SecurityGroups": [
