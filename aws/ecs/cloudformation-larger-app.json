@@ -102,9 +102,9 @@
       ],
       "ConstraintDescription": "must be Yes or No"
     },
-    "WeaveScopeServiceToken": {
+    "WeaveCloudServiceToken": {
       "Type": "String",
-      "Description": "Optional - Authentication token for Weave Scope service [http://scope.weave.works/]",
+      "Description": "Optional - Authentication token for Weave Cloud [https://cloud.weave.works/]. Leave empty to run Scope in Standalone Mode.",
       "Default": ""
     },
     "WeaveNetVersion": {
@@ -127,16 +127,12 @@
         "Yes"
       ]
     },
-    "UseScopeService": {
-      "Fn::Not": [
+    "UseScopeStandalone": {
+      "Fn::Equals": [
         {
-          "Fn::Equals": [
-            {
-              "Ref": "WeaveScopeServiceToken"
-            },
-            ""
-          ]
-        }
+          "Ref": "WeaveCloudServiceToken"
+        },
+        ""
       ]
     }
   },
@@ -619,18 +615,18 @@
                     [
                       {
                         "Fn::If": [
-                          "UseScopeService",
-                          "SERVICE_TOKEN=",
-                          "## SERVICE_TOKEN="
+                          "UseScopeStandalone",
+                          "## SERVICE_TOKEN=",
+                          "SERVICE_TOKEN="
                         ]
                       },
                       {
                         "Fn::If": [
-                          "UseScopeService",
+                          "UseScopeStandalone",
+                          "<unset>",
                           {
-                            "Ref": "WeaveScopeServiceToken"
-                          },
-                          "<unset>"
+                            "Ref": "WeaveCloudServiceToken"
+                          }
                         ]
                       }
                     ]
