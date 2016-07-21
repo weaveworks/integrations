@@ -19,7 +19,7 @@
           ]
         ]
       },
-      "Description": "Identiorca app frontend"
+      "Description": "App frontend"
     },
     "WeaveScope": {
       "Condition": "UseWeaveScopeStandalone",
@@ -134,7 +134,7 @@
     },
     "DeployExampleApp": {
       "Type": "String",
-      "Description": "No: only Weave Net/Scope net will be deployed, Yes: also deploy identiorca example application",
+      "Description": "No: only Weave Net/Scope net will be deployed, Yes: also deploy microservices demo app",
       "Default": "Yes",
       "AllowedValues": [
         "Yes",
