@@ -18,24 +18,24 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-69ea2904 |
-| us-west-1      | ami-d02b6fb0 |
-| us-west-2      | ami-c735f1a7 |
-| eu-west-1      | ami-1f65fc6c |
-| eu-central-1   | ami-d8c921b7 |
-| ap-northeast-1 | ami-7a2bdf1b |
-| ap-southeast-1 | ami-f97caf9a |
-| ap-southeast-2 | ami-142a0277 |
+| us-east-1      | ami-f66607e1 |
+| us-west-1      | ami-ffbbf99f |
+| us-west-2      | ami-3dc2165d |
+| eu-west-1      | ami-95c0b7e6 |
+| eu-central-1   | ami-3c7c8d53 |
+| ap-northeast-1 | ami-9ca768fd |
+| ap-southeast-1 | ami-10885073 |
+| ap-southeast-2 | ami-0aeadd69 |
 
 
 ## What's in the Weave ECS AMIs?
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2016.03.c` and also includes:
+version `2016.03.g` and also includes:
 
-* [Weave Net 1.6.0](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-160)
-* [Weave Scope 0.16.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0160)
+* [Weave Net 1.6.1](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-161)
+* [Weave Scope 0.17.1](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0171)
 
 
 ## Deployment Requirements
