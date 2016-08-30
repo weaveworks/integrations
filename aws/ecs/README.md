@@ -156,7 +156,7 @@ For example, this command configures the instance to communicate with Weave
 Cloud using token `3hud3h6ys3jhg9bq66n8xxa4b147dt5z`.
 
 ~~~bash
-echo SCOPE_AAS_PROBE_TOKEN=3hud3h6ys3jhg9bq66n8xxa4b147dt5z >> /etc/weave/scope.config
+echo SERVICE_TOKEN=3hud3h6ys3jhg9bq66n8xxa4b147dt5z >> /etc/weave/scope.config
 ~~~
 
 You can do this at instance-initialization time using
