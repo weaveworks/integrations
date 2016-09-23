@@ -15,28 +15,28 @@
     },
     "WeaveworksEcsAmiIds": {
       "us-east-1": {
-        "ImageId": "ami-52cd5445"
+        "ImageId": "ami-3d55272a"
       },
       "us-west-1": {
-        "ImageId": "ami-efa1e28f"
+        "ImageId": "ami-444d0224"
       },
       "us-west-2": {
-        "ImageId": "ami-a426edc4"
+        "ImageId": "ami-1ccd1f7c"
       },
       "eu-west-1": {
-        "ImageId": "ami-7b244e08"
+        "ImageId": "ami-b6760fc5"
       },
       "eu-central-1": {
-        "ImageId": "ami-721aec1d"
+        "ImageId": "ami-f562909a"
       },
       "ap-northeast-1": {
-        "ImageId": "ami-058a4964"
+        "ImageId": "ami-096cba68"
       },
       "ap-southeast-1": {
-        "ImageId": "ami-0d9f466e"
+        "ImageId": "ami-7934ee1a"
       },
       "ap-southeast-2": {
-        "ImageId": "ami-7df2c61e"
+        "ImageId": "ami-22a49541"
       }
     }
   },
@@ -110,7 +110,7 @@
     "WeaveNetVersion": {
       "Type": "String",
       "Description": "Version of Weave Net to install",
-      "Default": "v1.6.1"
+      "Default": "v1.6.2"
     },
     "WeaveScopeVersion": {
       "Type": "String",
