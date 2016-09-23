@@ -1,3 +1,8 @@
+## Weaveworks ECS Image (2016-09-22)
+
+New features:
+- Update base AMIs to 2016.03.i and Weave Version to 1.6.2 [#108](github.com/weaveworks/integrations/pull/108)
+
 ## Weaveworks ECS Image (2016-08-22)
 
 New features:
