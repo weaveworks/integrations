@@ -1,4 +1,4 @@
-{
+1.7.2{
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Weave-enabled AWS CloudFormation template to create resources required to run tasks on an ECS cluster.",
   "Outputs": {
@@ -536,7 +536,7 @@
                     "/",
                     [
                       "https://github.com/weaveworks/weave/releases/download",
-                      "v1.6.2",
+                      "v1.7.2",
                       "weave"
                     ]
                   ]
