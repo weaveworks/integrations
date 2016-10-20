@@ -71,7 +71,9 @@
       "# Remove all ECS execution traces added while running packer",
       "sudo stop ecs || true",
       "sudo docker rm ecs-agent 2> /dev/null || true",
-      "sudo rm -rf /var/log/ecs/* /var/lib/ecs/data/*"
+      "sudo rm -rf /var/log/ecs/* /var/lib/ecs/data/*",
+      "sudo rm /root/.ssh/authorized_keys",
+      "sudo rm /home/ec2-user/.ssh/authorized_keys"
     ]
   }]
 
