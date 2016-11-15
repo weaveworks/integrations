@@ -15,7 +15,6 @@ script:
   - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-no-app.json" | jq .
   - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-larger-app.json" | jq .
   - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-identiorca.json" | jq .
-  - aws cloudformation validate-template --template-body "file:////${PWD}/aws/ecs/cloudformation-microservices-referrence-app.json" | jq .
 
 after_success:
   - mkdir cfn-to-publish
@@ -23,7 +22,6 @@ after_success:
   - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-no-app.json" > cfn-to-publish/ecs-no-app.json
   - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-larger-app.json" > cfn-to-publish/ecs-larger-app.json
   - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-identiorca.json" > cfn-to-publish/ecs-identiorca.json
-  - jq ".Description += \" (weaveworks/integrations@${TRAVIS_COMMIT})\"" "aws/ecs/cloudformation-microservices-referrence-app.json" > cfn-to-publish/ecs-microservices-referrence-app.json
 
 deploy:
   provider: s3
