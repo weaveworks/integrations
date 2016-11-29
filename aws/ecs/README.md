@@ -18,24 +18,25 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-3fc1b928 |
-| us-west-1      | ami-4c2a642c |
-| us-west-2      | ami-de08d4be |
-| eu-west-1      | ami-dba2d8a8 |
-| eu-central-1   | ami-81738eee |
-| ap-northeast-1 | ami-4cbb692d |
-| ap-southeast-1 | ami-bb6cc9d8 |
-| ap-southeast-2 | ami-0de1d16e |
+| us-east-1      | ?? |
+| us-east-2      | ?? |
+| us-west-1      | ?? |
+| us-west-2      | ?? |
+| eu-west-1      | ?? |
+| eu-central-1   | ?? |
+| ap-northeast-1 | ?? |
+| ap-southeast-1 | ?? |
+| ap-southeast-2 | ?? |
 
 
 ## What's in the Weave ECS AMIs?
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2016.03.i` and also includes:
+version `2016.09.b` and also includes:
 
-* [Weave Net 1.7.2](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-172)
-* [Weave Scope 0.17.1](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-0171)
+* [Weave Net 1.8.1](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-181)
+* [Weave Scope 1.1.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-110)
 
 
 ## Deployment Requirements
@@ -64,9 +65,16 @@ Besides the customary Amazon ECS API actions required by all container instances
 1. `ec2:DescribeInstances`
 2. `ec2:DescribeTags`
 3. `autoscaling:DescribeAutoScalingInstances`
+4. `ecs:ListServices`
+5. `ecs:DescribeTasks`
+6. `ecs:DescribeServices`
 
-These extra actions are needed for discovering instance peers. [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/41f1f5a60d39d39b78f0e06e224a7c3bad30c4e8/aws-ecs/data/weave-ecs-policy.json#L16-L18) (from the
-[Weaveworks ECS guide](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)), describes the minimal policy definition.
+These extra actions are needed for discovering instance peers (1,2,3) and
+creating the ECS views in Weave Scope
+(4,5,6). [`weave-ecs-policy.json`](https://github.com/weaveworks/guides/blob/41f1f5a60d39d39b78f0e06e224a7c3bad30c4e8/aws-ecs/data/weave-ecs-policy.json#L16-L18)
+(from the
+[Weaveworks ECS guide](http://weave.works/guides/service-discovery-with-weave-aws-ecs.html)),
+describes the minimal policy definition.
 
 For more information on IAM policies see
 [IAM Policies for Amazon EC2](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-policies-for-amazon-ec2.html).
