@@ -7,14 +7,15 @@ if [ -z "${AWS_ACCESS_KEY_ID+x}" -a -z "${AWS_SECRET_ACCESS_KEY+x}" ]; then
 fi
 
 # Taken from http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
-BASE_AMIS=('us-east-1:ami-3d55272a'
-	   'us-west-1:ami-444d0224'
-	   'us-west-2:ami-1ccd1f7c'
-	   'eu-west-1:ami-b6760fc5'
-	   'eu-central-1:ami-f562909a'
-	   'ap-northeast-1:ami-096cba68'
-	   'ap-southeast-1:ami-7934ee1a'
-	   'ap-southeast-2:ami-22a49541'
+BASE_AMIS=('us-east-1:ami-eca289fb'
+	   'us-east-2:ami-446f3521'
+	   'us-west-1:ami-9fadf8ff'
+	   'us-west-2:ami-7abc111a'
+	   'eu-west-1:ami-a1491ad2'
+	   'eu-central-1:ami-54f5303b'
+	   'ap-northeast-1:ami-9cd57ffd'
+	   'ap-southeast-1:ami-a900a3ca'
+	   'ap-southeast-2:ami-5781be34'
 	  )
 
 # Mimic associative arrays using ":" to compose keys and values,
