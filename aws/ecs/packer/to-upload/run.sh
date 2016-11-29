@@ -22,16 +22,14 @@ run_scope() {
 	while is_container_running weavescope; do sleep 2; done
 
 	# launch scope
-	ARGS=""
+	ARGS="--probe.ecs=true"
 	if [ -e /etc/weave/scope.config ]; then
 	    . /etc/weave/scope.config
 	fi
 	if [ -n "${SERVICE_TOKEN+x}" ]; then
-	    succeed_or_die scope launch "--service-token=$SERVICE_TOKEN"
-	else
-	    # Connect to the Scope apps in the weave network
-	    succeed_or_die scope launch
+	    ARGS="$ARGS --service-token=$SERVICE_TOKEN"
 	fi
+	succeed_or_die scope launch $ARGS
     done
 }
 
