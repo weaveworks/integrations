@@ -172,6 +172,30 @@ You can do this at instance-initialization time using
 which is similar to how
 [ECS Cluster Mapping is configured](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html#instance-launch-user-data-step).
 
+## Upgrades
+
+We update the AMIs regularly (~monthly) to include the latest versions of Weave Net and Weave Scope. However, it is possible to upgrade Weave Net and Weave Scope in your running EC2 instances without needing to wait for a new AMI release nor rebuilding your cluster. 
+
+In order to upgrade Scope to the latest released version you should run the following commands in each of your instances:
+
+~~~bash
+sudo curl -L git.io/scope -o /usr/local/bin/scope
+sudo chmod a+x /usr/local/bin/scope
+sudo stop scope
+sudo start scope
+~~~
+
+Im a similar fashion you can upgrade Weave Net to the latest version by running the following commands in each of your instances:
+
+
+~~~bash
+sudo curl -L git.io/weave -o /usr/local/bin/weave
+sudo chmod a+x /usr/local/bin/weave
+sudo stop weave
+sudo start weave
+~~~
+
+
 <!--- Do not change the title, otherwise links to
 https://github.com/weaveworks/integrations/tree/master/aws/ecs#creating-your-own-customized-weave-ecs-ami
 will break (e.g. from the ECS guide) -->
