@@ -174,7 +174,7 @@ which is similar to how
 
 ## Upgrades
 
-We update the AMIs regularly (~monthly) to include the latest versions of Weave Net and Weave Scope. However, it is possible to upgrade Weave Net and Weave Scope in your running EC2 instances without needing to wait for a new AMI release. 
+We update the AMIs regularly (~monthly) to include the latest versions of Weave Net and Weave Scope. However, it is possible to upgrade Weave Net and Weave Scope in your running EC2 instances without needing to wait for a new AMI release nor rebuilding your cluster. 
 
 In order to upgrade Scope to the latest released version you should run the following commands in each of your instances:
 
@@ -185,7 +185,7 @@ sudo stop scope
 sudo start scope
 ~~~
 
-Im a similar fashion you can upgrade Weave Net to the latest version by runnig the following commands in each of your instances:
+Im a similar fashion you can upgrade Weave Net to the latest version by running the following commands in each of your instances:
 
 
 ~~~bash
