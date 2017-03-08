@@ -1,10 +1,15 @@
 ## Weaveworks ECS Image (2016-11-29)
 New features [#117](github.com/weaveworks/integrations/pull/117):
-- Update Weave Net to 1.8.1
-- Update Weave Scope to 1.1.0
+- Update Weave Net to 1.9.3
+- Update Weave Scope to 1.2.1
 - Enable Scope ECS views
 - Add documentation for new actions required for Scope ECS views
 - Update base ECS images (including new Ohio region)
+
+## Weaveworks ECS Image (2017-03-08)
+
+New features:
+- Update base AMIs to 2016.03.i, Weave Scope to 1.2.1 and Weave Net Version to 1.9.3 [#108](github.com/weaveworks/integrations/pull/108)
 
 ## Weaveworks ECS Image (2016-09-22)
 
