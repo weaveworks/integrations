@@ -15,31 +15,37 @@
     },
     "WeaveworksEcsAmiIds": {
       "us-east-1": {
-        "ImageId": "ami-eca289fb"
+        "ImageId": "ami-275ffe31"
       },
       "us-east-2": {
-        "ImageId": "ami-446f3521"
+        "ImageId": "ami-62745007"
       },      
       "us-west-1": {
-        "ImageId": "ami-9fadf8ff"
+        "ImageId": "ami-689bc208"
       },
       "us-west-2": {
-        "ImageId": "ami-7abc111a"
+        "ImageId": "ami-62d35c02"
       },
       "eu-west-1": {
-        "ImageId": "ami-a1491ad2"
+        "ImageId": "ami-95f8d2f3"
+      },
+      "eu-west-2": {
+        "ImageId": "ami-bf9481db"
       },
       "eu-central-1": {
-        "ImageId": "ami-54f5303b"
+        "ImageId": "ami-085e8a67"
       },
       "ap-northeast-1": {
-        "ImageId": "ami-9cd57ffd"
+        "ImageId": "ami-f63f6f91"
       },
       "ap-southeast-1": {
-        "ImageId": "ami-a900a3ca"
+        "ImageId": "ami-b4ae1dd7"
       },
       "ap-southeast-2": {
-        "ImageId": "ami-5781be34"
+        "ImageId": "ami-fbe9eb98"
+      },
+      "ca-central-1": {
+        "ImageId": "ami-ee58e58a"
       }
     }
   },
@@ -113,12 +119,12 @@
     "WeaveNetVersion": {
       "Type": "String",
       "Description": "Version of Weave Net to install",
-      "Default": "v1.8.1"
+      "Default": "v1.9.4"
     },
     "WeaveScopeVersion": {
       "Type": "String",
       "Description": "Version of Weave Scope to install",
-      "Default": "v1.1.0"
+      "Default": "v1.3.0"
     }
   },
   "Conditions": {

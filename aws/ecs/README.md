@@ -8,7 +8,7 @@ To make [Weave Net](http://weave.works/net) and
 [Amazon ECS](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html),
 a set of Amazon Machine Images (AMIs) are provided. These AMIs are fully
 compatible with the
-[ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2).
+[ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B06XS8WHGJ).
 
 The following are the latest supported Weave AMIs for each region:
 
@@ -18,25 +18,27 @@ not remove it and respect the format! -->
 
 | Region         | AMI          |
 |----------------|--------------|
-| us-east-1      | ami-c63709d1 |
-| us-east-2      | ami-4788d222 |
-| us-west-1      | ami-28e7b348 |
-| us-west-2      | ami-c62f81a6 |
-| eu-west-1      | ami-25adf356 |
-| eu-central-1   | ami-7fd31410 |
-| ap-northeast-1 | ami-cb1eafaa |
-| ap-southeast-1 | ami-35822f56 |
-| ap-southeast-2 | ami-06300965 |
+| us-east-1      | ami-f560d8e3 |
+| us-east-2      | ami-13e2c676 |
+| us-west-1      | ami-95cc97f5 |
+| us-west-2      | ami-4fe87c2f |
+| eu-west-1      | ami-13c8f475 |
+| eu-west-2      | ami-8a6276ee |
+| eu-central-1   | ami-216dbc4e |
+| ap-northeast-1 | ami-b2efb5d5 |
+| ap-southeast-1 | ami-e152ee82 |
+| ap-southeast-2 | ami-ac1b14cf |
+| ca-central-1   | ami-8104b9e5 |
 
 
 ## What's in the Weave ECS AMIs?
 
 These latest Weave ECS AMIs are based on Amazon's
 [ECS-Optimized Amazon Linux AMI](https://aws.amazon.com/marketplace/pp/B00U6QTYI2),
-version `2016.09.b` and also includes:
+version `2016.09.g` and also includes:
 
-* [Weave Net 1.8.1](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-181)
-* [Weave Scope 1.1.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-110)
+* [Weave Net 1.9.3](https://github.com/weaveworks/weave/blob/master/CHANGELOG.md#release-193)
+* [Weave Scope 1.3.0](https://github.com/weaveworks/scope/blob/master/CHANGELOG.md#release-130)
 
 
 ## Deployment Requirements
