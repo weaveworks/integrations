@@ -14,7 +14,7 @@ current_instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-i
 PEER_GROUP_NAME=$($aws ec2 describe-instances --instance-ids $current_instance_id --query 'Reservations[0].Instances[0].Tags[?Key==`weave:peerGroupName`].Value' --output text)
 
 if [ -n "$PEER_GROUP_NAME" ]; then
-    peer_instances=$($aws ec2 describe-tags --filters "Name=resource-type,Values=instance,Name=tag:weave:peerGroupName,Values=$PEER_GROUP_NAME" --query "Tags[?ResourceId!=\`$current_instance_id\`].ResourceId" --output text)
+    peer_instances=$($aws ec2 describe-tags --filters "Name=resource-type,Values=instance" "Name=tag:weave:peerGroupName,Values=$PEER_GROUP_NAME" --query "Tags[?ResourceId!=\`$current_instance_id\`].ResourceId" --output text)
 
 else
     current_autoscaling_group=$($aws autoscaling describe-auto-scaling-instances --query "AutoScalingInstances[?InstanceId==\`$current_instance_id\`].AutoScalingGroupName"  --output text)
