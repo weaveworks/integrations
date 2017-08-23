@@ -119,12 +119,12 @@
     "WeaveNetVersion": {
       "Type": "String",
       "Description": "Version of Weave Net to install",
-      "Default": "v1.9.4"
+      "Default": "v2.0.2"
     },
     "WeaveScopeVersion": {
       "Type": "String",
       "Description": "Version of Weave Scope to install",
-      "Default": "v1.3.0"
+      "Default": "v1.6.2"
     }
   },
   "Conditions": {
