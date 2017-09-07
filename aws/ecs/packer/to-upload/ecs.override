@@ -18,10 +18,10 @@ stop on stopping weave
 env DOCKER_HOST=unix:///var/run/weave/weave.sock
 
 pre-start script
-  # Wait for weave-proxy to be ready (for a maximum of two minutes to avoid an
+  # Wait for weave container to be ready (for a maximum of two minutes to avoid an
   # Upstart deadlock if Weave failed to start).
   # This checks that the container is running but also implicitly checks that it's ready to
   # receive requests since DOCKER_HOST=unix:///var/run/weave/weave.sock
-  timeout 120 bash -c 'while [ "$(docker inspect -f '"'"'{{.State.Running}}'"'"' weaveproxy 2> /dev/null )" != true ]; do sleep 1; done' || { stop ; exit 0; }
+  timeout 120 bash -c 'while [ "$(docker inspect -f '"'"'{{.State.Running}}'"'"' weave 2> /dev/null )" != true ]; do sleep 1; done' || { stop ; exit 0; }
   exec /usr/libexec/amazon-ecs-init pre-start
 end script

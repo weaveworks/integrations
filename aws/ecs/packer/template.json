@@ -49,13 +49,13 @@
       "sudo yum -y install python-pip jq",
       "sudo python-pip install awscli",
 
-      "sudo curl -L https://github.com/weaveworks/weave/releases/download/v1.9.4/weave -o /usr/local/bin/weave",
+      "sudo curl -L https://github.com/weaveworks/weave/releases/download/v2.0.4/weave -o /usr/local/bin/weave",
       "sudo chmod +x /usr/local/bin/weave",
       "sudo /usr/local/bin/weave setup",
 
-      "sudo curl -L https://github.com/weaveworks/scope/releases/download/v1.3.0/scope -o /usr/local/bin/scope",
+      "sudo curl -L https://github.com/weaveworks/scope/releases/download/v1.6.4/scope -o /usr/local/bin/scope",
       "sudo chmod +x /usr/local/bin/scope",
-      "docker pull weaveworks/scope:1.3.0",
+      "docker pull weaveworks/scope:1.6.4",
 
 
       "sudo mv /home/ec2-user/weave.conf /etc/init/weave.conf",

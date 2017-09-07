@@ -46,15 +46,10 @@ run_weave() {
   trap 'succeed_or_die weave stop; exit 0' TERM
   while true; do
       # verify that weave is not running
-      while is_container_running weaveproxy && is_container_running weave; do sleep 2; done
+      while is_container_running weave; do sleep 2; done
       # launch weave
       PEERS=$(succeed_or_die /etc/weave/peers.sh)
-      if ! is_container_running weave; then
-	  succeed_or_die weave launch-router $PEERS
-      fi
-      if ! is_container_running weaveproxy; then
-	  succeed_or_die weave launch-proxy --hostname-from-label 'com.amazonaws.ecs.container-name'
-      fi
+      succeed_or_die weave launch --plugin=false --hostname-from-label 'com.amazonaws.ecs.container-name' $PEERS
   done
 }
 
