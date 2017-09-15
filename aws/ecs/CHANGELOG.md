@@ -1,3 +1,9 @@
+## Weaveworks ECS Image (2017-09-07)
+
+New features:
+- Update base AMIs to 2017.03.f, Weave Scope to 1.6.4 and Weave Net version to 2.0.4
+[#133](github.com/weaveworks/integrations/pull/133)
+
 ## Weaveworks ECS Image (2017-03-29)
 
 New features:
