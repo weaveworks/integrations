@@ -58,7 +58,7 @@ function invoke_packer() {
     if [ -n "${RELEASE+x}" ]; then
 	AMI_GROUPS="all"
     fi
-    packer build -var "ami_groups=${AMI_GROUPS}" -var "aws_access_key=${AWS_ACCESS_KEY_ID}" -var "aws_secret_key=${AWS_SECRET_ACCESS_KEY}" -var "aws_region=$1" -var "source_ami=$2" template.json > $LOGFILE
+    packer build -var "ami_groups=${AMI_GROUPS}" -var "aws_region=$1" -var "source_ami=$2" template.json > $LOGFILE
     if [ "$?" = 0 ]; then
 	echo "Success: $(tail -n 1 $LOGFILE)"
 	rm $LOGFILE
