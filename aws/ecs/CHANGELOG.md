@@ -1,3 +1,8 @@
+## Weaveworks ECS Image (2018-06-13)
+
+New features:
+- Update Weave Scope to 1.9.0 and Weave Net version to 2.3.0
+
 ## Weaveworks ECS Image (2017-09-07)
 
 New features:
