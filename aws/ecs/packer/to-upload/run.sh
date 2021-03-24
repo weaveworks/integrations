@@ -47,8 +47,16 @@ run_weave() {
   while true; do
       # verify that weave is not running
       while is_container_running weave; do sleep 2; done
+      # get the service token from scope config
+      if [ -e /etc/weave/scope.config ]; then
+	      . /etc/weave/scope.config
+	  fi
       # launch weave
-      PEERS=$(succeed_or_die /etc/weave/peers.sh)
+      if [ -n "${SERVICE_TOKEN+x}" ]; then
+          PEERS="--token=$SERVICE_TOKEN"
+      else
+          PEERS=$(succeed_or_die /etc/weave/peers.sh)
+      fi
       succeed_or_die weave launch --plugin=false --hostname-from-label 'com.amazonaws.ecs.container-name' $PEERS
   done
 }
